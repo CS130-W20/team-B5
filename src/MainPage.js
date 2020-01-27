@@ -17,7 +17,7 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import Divider from '@material-ui/core/Divider';
 import List from '@material-ui/core/List';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
-import {Data, Model, Task, Wizard} from './Views'
+import {Data, Model, Task, Wizard, SignIn} from './Views'
 import {Grid, Box} from '@material-ui/core';
 
 import {BrowserRouter as Router, Link, Route, Switch} from "react-router-dom";
@@ -78,9 +78,6 @@ const useStyles = makeStyles(theme => ({
       duration: theme.transitions.duration.leavingScreen,
     }),
     width: theme.spacing(7),
-    [theme.breakpoints.up('sm')]: {
-      width: theme.spacing(9),
-    },
   },
   appBarSpacer: theme.mixins.toolbar,
   content: {
@@ -102,7 +99,7 @@ const useStyles = makeStyles(theme => ({
     height: 240,
   },
   icon: {
-    paddingLeft: theme.spacing(1.4),
+    paddingLeft: theme.spacing(0.8),
     width: theme.spacing(3),
   },
   noLinkDefault: {
@@ -112,8 +109,9 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function MainPage(props) {
+  const theme = useTheme();
   const classes = useStyles();
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = React.useState(false);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -206,6 +204,9 @@ function MainPage(props) {
               </Route>
               <Route path="/task">
                 <Task/>
+              </Route>
+              <Route path="/signin">
+                <SignIn/>
               </Route>
               <Route path="/" exact>
                 <Wizard/>

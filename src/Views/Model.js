@@ -65,7 +65,7 @@ export default function Model() {
 
                 <Grid item xs={12} container className={classes.main}>
                     {[1, 2, 3, 4, 5].map(x =>
-                        x > 3 ? <Grid item xs={12} sm={6} md={4} lg={3} key={x}>
+                        x > 3 ? <Grid item xs={12} sm={6} md={4} lg={4} key={x}>
                             <Card className={classes.card}>
                                 <CardHeader
                                     title="My Model"
@@ -88,7 +88,7 @@ export default function Model() {
                                     </Button>
                                 </CardActions>
                             </Card>
-                        </Grid> : <Grid item xs={12} sm={6} md={4} lg={3} key={x}>
+                        </Grid> : <Grid item xs={12} sm={6} md={4} lg={4} key={x}>
                             <Card className={classes.card}>
                                 <CardHeader
                                     title="Model name"
