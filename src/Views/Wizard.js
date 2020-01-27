@@ -7,18 +7,16 @@ import StepContent from '@material-ui/core/StepContent';
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
+import {Grid, Box} from '@material-ui/core';
+
 
 const useStyles = makeStyles(theme => ({
-    root: {
-        width: '100%',
-    },
     button: {
         marginTop: theme.spacing(1),
         marginRight: theme.spacing(1),
     },
     actionsContainer: {
         marginBottom: theme.spacing(2),
-
     },
     resetContainer: {
         padding: theme.spacing(3),
@@ -29,12 +27,6 @@ const useStyles = makeStyles(theme => ({
         width: 500,
         margin: 'auto',
         borderRadius: 25
-    },
-    title: {
-        textAlign:'left',
-        paddingTop:0,
-        paddingBottom:8,
-        marginTop:-14,
     }
 }));
 
@@ -78,9 +70,9 @@ export default function VerticalLinearStepper() {
     };
 
     return (
-        <div className={classes.root}>
-            <Typography className={classes.title} variant="h4">Wizard</Typography>
-            <Stepper activeStep={activeStep} orientation="vertical">
+        <div>
+            <Typography variant="h4">Wizard</Typography>
+            <Stepper activeStep={activeStep} orientation="vertical" align="center">
                 <Step key={1}>
                     <StepLabel>Training Data Upload</StepLabel>
                     <StepContent>
