@@ -24,7 +24,7 @@ const useStyles = makeStyles(theme => ({
     dragAndDrop: {
         border: 'dotted',
         height: 200,
-        width: 500,
+        maxWidth: 500,
         margin: 'auto',
         borderRadius: 25
     }

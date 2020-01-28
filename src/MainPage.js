@@ -99,7 +99,7 @@ const useStyles = makeStyles(theme => ({
     height: 240,
   },
   icon: {
-    paddingLeft: theme.spacing(0.8),
+    paddingLeft: theme.spacing(0.5),
     width: theme.spacing(3),
   },
   noLinkDefault: {
