@@ -1,5 +1,5 @@
-# Sample Project Title
-Briefly describe your project here.
+# Brain.ai
+Brain.ai is a web application that performs deep-learning-based brain extraction for medical imaging researchers.It allows researchers with limited or no programming background to make use of deep learning on their brain extraction task by providing the necessary software frameworks and computation power. 
 
 ## Directory Structure
 Explain how the code is organized
