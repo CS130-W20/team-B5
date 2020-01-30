@@ -75,7 +75,7 @@ export default function Data() {
                             <Card className={classes.card}>
                                 <CardHeader
                                     title="T2 flair axial"
-                                    subheader="prediction Set"
+                                    subheader="Prediction Set"
                                 />
                                 <CardActionArea>
                                     <CardMedia
@@ -91,14 +91,14 @@ export default function Data() {
                                         Remove
                                     </Button>
                                     <Button size="small" color="primary">
-                                        Process
+                                        Download
                                     </Button>
                                 </CardActions>
                             </Card>
                         </Grid> : <Grid item xs={12} sm={6} md={4} lg={3} key={x}>
                             <Card className={classes.card}>
                                 <CardHeader
-                                    title="Dataset name"
+                                    title="Dataset ID"
                                     subheader="Training Set"
                                 />
                                 <CardActionArea>
@@ -114,9 +114,6 @@ export default function Data() {
                                 <CardActions>
                                     <Button size="small" color="primary">
                                         Remove
-                                    </Button>
-                                    <Button size="small" color="primary">
-                                        Process
                                     </Button>
                                     <Button size="small" color="primary">
                                         Download

@@ -2,7 +2,7 @@ import React from 'react';
 import Grid from "@material-ui/core/Grid";
 import {makeStyles} from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
-import {CloudUpload, Search} from "@material-ui/icons";
+import {AddBox, Create, Add, Search} from "@material-ui/icons";
 import FormControl from "@material-ui/core/FormControl";
 import Input from "@material-ui/core/Input";
 import InputAdornment from "@material-ui/core/InputAdornment";
@@ -60,7 +60,15 @@ export default function Model() {
                         </FormControl>
                     </Grid>
                     <Grid>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</Grid>
-
+                    <Grid item><Button
+                      variant="outlined"
+                      color="default"
+                      className={classes.searchButton}
+                      startIcon={<Create/>}
+                    >
+                        New Model
+                    </Button>
+                    </Grid>
                 </Grid>
 
                 <Grid item xs={12} container className={classes.main}>
@@ -68,7 +76,7 @@ export default function Model() {
                         x > 3 ? <Grid item xs={12} sm={6} md={4} lg={4} key={x}>
                             <Card className={classes.card}>
                                 <CardHeader
-                                    title="My Model"
+                                    title="Model ID"
                                     subheader="shared model"
                                 />
                                 <CardActionArea>
@@ -77,7 +85,6 @@ export default function Model() {
                                         image="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Effective_T2-weighted_MRI_of_hemosiderin_deposits_after_subarachnoid_hemorrhage.png/200px-Effective_T2-weighted_MRI_of_hemosiderin_deposits_after_subarachnoid_hemorrhage.png"
                                         title="Contemplative Reptile"
                                     />
-
                                 </CardActionArea>
                                 <CardActions>
                                     <Button size="small" color="primary">
@@ -91,8 +98,8 @@ export default function Model() {
                         </Grid> : <Grid item xs={12} sm={6} md={4} lg={4} key={x}>
                             <Card className={classes.card}>
                                 <CardHeader
-                                    title="Model name"
-                                    subheader="my model"
+                                    title="Model ID"
+                                    subheader="Description"
                                 />
                                 <CardActionArea>
                                     <CardMedia
@@ -113,9 +120,9 @@ export default function Model() {
                                     <FormGroup row>
                                         <FormControlLabel
                                             control={
-                                                <Switch  value="checkedA" />
+                                                <Switch value="checkedA" />
                                             }
-                                            label="share"
+                                            label="Share"
                                         /></FormGroup>
                                 </CardActions>
                             </Card>

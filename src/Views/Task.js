@@ -9,97 +9,103 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Chip from "@material-ui/core/Chip";
 import DoneIcon from '@material-ui/icons/Done';
-import {Cached, CloudDownload, Stop,Delete} from "@material-ui/icons";
+import {Cached, CloudDownload, Stop, Delete} from "@material-ui/icons";
 import IconButton from "@material-ui/core/IconButton";
+import {green} from '@material-ui/core/colors';
+import {createMuiTheme, ThemeProvider} from '@material-ui/core/styles';
+
 
 const useStyles = makeStyles(theme => ({
-    table: {
-        minWidth: 650,
-    },
-    chip: {
-        width: 120,
-    },
-    button: {
-        margin: theme.spacing(1),
-    },
+  table: {
+    minWidth: 650,
+  },
+  chip: {
+    width: 120,
+  },
+  button: {
+    margin: theme.spacing(1),
+  },
 }));
 
 
 const rows = [
-    [1, 'Model Training', 'T1-MRI-1', 'U-net-T1', 'finished'],
-    [2, 'Model Prediction', 'T2-Flair', 'Whatever', 'in progress'],
-    [3, 'Model Training', 'T1-MRI-1', 'U-net', 'stopped'],
-    [4, 'Model Training', 'T1-MRI-1', 'U-net', 'finished'],
-    [5, 'Model Training', 'T1-MRI-1', 'U-net', 'timeout'],
+  [1, 'Prediction', 'T2-Flair', 'U-net', 'Finished'],
+  [2, 'Training', 'T1-MRI-1', 'U-net-T1', 'Finished'],
+  [3, 'Prediction', 'T2-Flair', 'U-net', 'In progress'],
+  [4, 'Training', 'T1-MRI-1', 'U-net', 'Stopped'],
+  [5, 'Training', 'T1-MRI-1', 'U-net', 'Timeout'],
 ];
+const handleDelete = () => {
+  console.info('You clicked the delete icon.');
+};
+
+const innerTheme = createMuiTheme({
+  palette: {
+    primary: {
+      main: green["500"],
+    },
+  },
+});
 
 export default function SimpleTable() {
-    const classes = useStyles();
+  const classes = useStyles();
 
-    return (
-        <TableContainer component={Paper}>
-            <Table className={classes.table} aria-label="simple table">
-                <TableHead>
-                    <TableRow>
-                        <TableCell>Id </TableCell>
-                        <TableCell>Type </TableCell>
-                        <TableCell align="left">Data</TableCell>
-                        <TableCell align="left">Model</TableCell>
-                        <TableCell align="left">Progress</TableCell>
-                        <TableCell align="left">Actions</TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {rows.map(row => (
-                        <TableRow key={row[0]}>
-                            <TableCell component="th" scope="row">
-                                {row[0]}
-                            </TableCell>
-                            <TableCell scope="row">
-                                {row[1]}
-                            </TableCell>
-                            <TableCell align="left">{row[2]}</TableCell>
-                            <TableCell align="left"> {row[3]}</TableCell>
-                            <TableCell align="left">{
-                                row[4] === 'finished' ?
-                                    <Chip className={classes.chip} label='finished' variant="outlined" color='default'
-                                          deleteIcon={<DoneIcon/>}
-                                          onDelete={() => {
-                                          }}/> : row[4] === 'in progress' ?
-                                    <Chip className={classes.chip} label='in progress' variant="outlined"
-                                          color="primary" deleteIcon={<Cached/>}
-                                          onDelete={() => {
-                                          }}/> : row[4] === 'timeout' ?
-                                        <Chip className={classes.chip} label='timeout' variant="outlined"
-                                              color="secondary" deleteIcon={<Stop/>}
-                                              onDelete={() => {
-                                              }}/> : <Chip className={classes.chip} label='stopped' variant="outlined"
-                                                           color="default" deleteIcon={<Stop/>}
-                                                           onDelete={() => {
-                                                           }}/>
-                            }</TableCell>
-                            <TableCell align="left">
-                                {
-                                    row[4] === 'finished' ?
-                                        <IconButton aria-label="delete">
-                                            <CloudDownload/>
-                                        </IconButton> : null
-                                }
-                                {
-                                    row[4] === 'in progress' ?
-                                        <IconButton aria-label="delete">
-                                            <Stop/>
-                                        </IconButton> : null
-                                }
+  return (
+    <TableContainer component={Paper}>
+      <Table className={classes.table} aria-label="simple table">
+        <TableHead>
+          <TableRow>
+            <TableCell>Id </TableCell>
+            <TableCell>Type </TableCell>
+            <TableCell align="left">Data</TableCell>
+            <TableCell align="left">Model</TableCell>
+            <TableCell align="left">Progress</TableCell>
+            <TableCell align="left">Actions</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {rows.map(row => (
+            <TableRow key={row[0]}>
+              <TableCell scope="row">{row[0]}</TableCell>
+              <TableCell>{row[1]}</TableCell>
+              <TableCell>{row[2]}</TableCell>
+              <TableCell>{row[3]}</TableCell>
+              <TableCell>{
+                row[4] === 'Finished' ?
+                  <ThemeProvider theme={innerTheme}>
+                    <Chip className={classes.chip} label='Finished' variant="outlined" color='primary'
+                          deleteIcon={<DoneIcon/>} onDelete={handleDelete}/>
+                  </ThemeProvider> : row[4] === 'In progress' ?
+                  <Chip className={classes.chip} label='In progress' variant="outlined"
+                        color="primary" deleteIcon={<Cached/>} onDelete={handleDelete}/> : row[4] === 'Timeout' ?
+                    <Chip className={classes.chip} label='Timeout' variant="outlined"
+                          color="secondary" deleteIcon={<Stop/>} onDelete={handleDelete}/> :
+                    <Chip className={classes.chip} label='Stopped' variant="outlined"
+                          color="default" deleteIcon={<Stop/>} onDelete={handleDelete}/>
+              }</TableCell>
+              <TableCell>
+                {
+                  row[4] === 'Finished' && row[1] === "Prediction" ?
+                    <IconButton aria-label="delete">
+                      <CloudDownload/>
+                    </IconButton> : null
+                }
+                {
+                  row[4] === 'In progress' ?
+                    <IconButton aria-label="delete">
+                      <Stop/>
+                    </IconButton> : null
+                }
 
-                                <IconButton aria-label="delete">
-                                    <Delete/>
-                                </IconButton>
-                            </TableCell>
-                        </TableRow>
-                    ))}
-                </TableBody>
-            </Table>
-        </TableContainer>
-    );
+                <IconButton aria-label="delete">
+                  <Delete/>
+                </IconButton>
+              </TableCell>
+
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
+  );
 }

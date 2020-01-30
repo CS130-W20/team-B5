@@ -127,7 +127,7 @@ export default function VerticalLinearStepper() {
                     </StepContent>
                 </Step>
                 <Step key={3}>
-                    <StepLabel>supply images to model</StepLabel>
+                    <StepLabel>Prediction Data Upload</StepLabel>
                     <StepContent>
                         <Typography>{getStepContent(0)}</Typography>
                         <div className={classes.actionsContainer}>
