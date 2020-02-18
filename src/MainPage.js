@@ -7,20 +7,23 @@ import Hidden from '@material-ui/core/Hidden';
 import IconButton from '@material-ui/core/IconButton';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
+import {AccountCircle} from '@material-ui/icons';
 import MenuIcon from '@material-ui/icons/Menu';
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import {makeStyles, useTheme} from '@material-ui/core/styles';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCode, faDatabase, faHatWizard, faTasks} from '@fortawesome/free-solid-svg-icons';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import Divider from '@material-ui/core/Divider';
 import List from '@material-ui/core/List';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import {Data, Model, Task, Wizard, SignIn} from './Views'
 import {Grid, Box} from '@material-ui/core';
+import Button from '@material-ui/core/Button';
+import {Menu, MenuItem} from '@material-ui/core';
 
-import {BrowserRouter as Router, Link, Route, Switch} from "react-router-dom";
+import {BrowserRouter as Router, Link, Route, Switch, useHistory} from "react-router-dom";
 
 const drawerWidth = 240;
 
@@ -108,51 +111,118 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+function Profile() {
+  const classes = useStyles();
+  let history = useHistory();
+
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const handleMenu = event => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+    // history.push("/")
+    window.location.href = "/";
+  };
+  const currentUser = "Jiayu Hu";
+  const logedIn = true;
+
+  return !logedIn ?
+    <Link to={'/signin'} className={classes.noLinkDefault}>
+      <Button color="inherit">Login</Button>
+    </Link> :
+    <div>
+      <Button
+        aria-label="account of current user"
+        aria-controls="menu-appbar"
+        aria-haspopup="true"
+        onClick={handleMenu}
+        color="inherit"
+        size="large"
+        style={{textTransform: 'none'}}
+      >
+        {currentUser} &nbsp;
+        <AccountCircle/>
+      </Button>
+      <Menu
+        id="menu-appbar"
+        anchorEl={anchorEl}
+        anchorOrigin={{
+          vertical: 'top',
+          horizontal: 'right',
+        }}
+        keepMounted
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'right',
+        }}
+        open={Boolean(anchorEl)}
+        onClose={handleClose}
+      >
+        <MenuItem onClick={handleClose}>Log Out</MenuItem>
+      </Menu>
+    </div>
+}
+
+function MyDrawer(props) {
+  const classes = useStyles();
+  return <Drawer
+    variant="permanent"
+    classes={{
+      paper: clsx(classes.drawerPaper, !props.open && classes.drawerPaperClose),
+    }}
+    open={props.open}
+  >
+    <div className={classes.toolbarIcon}>
+      <IconButton onClick={props.close}>
+        <ChevronLeftIcon/>
+      </IconButton>
+    </div>
+    <Divider/>
+    <List>
+      <div>
+        <Link to={'/wizard'} className={classes.noLinkDefault}>
+          <ListItem button>
+            <ListItemIcon className={classes.icon}><FontAwesomeIcon icon={faHatWizard}/></ListItemIcon>
+            <ListItemText primary={'Wizard'}/>
+          </ListItem>
+        </Link>
+
+        <Link to={'/data'} className={classes.noLinkDefault}>
+          <ListItem button>
+            <ListItemIcon className={classes.icon}><FontAwesomeIcon icon={faDatabase}/></ListItemIcon>
+            <ListItemText primary={'Data'}/>
+          </ListItem>
+        </Link>
+
+        <Link to={'/model'} className={classes.noLinkDefault}>
+          <ListItem button>
+            <ListItemIcon className={classes.icon}><FontAwesomeIcon icon={faCode}/></ListItemIcon>
+            <ListItemText primary={'Model'}/>
+          </ListItem>
+        </Link>
+
+        <Link to={'/task'} className={classes.noLinkDefault}>
+          <ListItem button>
+            <ListItemIcon className={classes.icon}><FontAwesomeIcon icon={faTasks}/></ListItemIcon>
+            <ListItemText primary={'Task'}/>
+          </ListItem>
+        </Link>
+      </div>
+    </List>
+    <Divider/>
+  </Drawer>
+}
+
 function MainPage(props) {
-  const theme = useTheme();
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
-
   const handleDrawerOpen = () => {
     setOpen(true);
   };
   const handleDrawerClose = () => {
     setOpen(false);
   };
-
-  const drawer = (
-    <div>
-      <Link to={'/wizard'} className={classes.noLinkDefault}>
-        <ListItem button>
-          <ListItemIcon className={classes.icon}><FontAwesomeIcon icon={faHatWizard}/></ListItemIcon>
-          <ListItemText primary={'Wizard'}/>
-        </ListItem>
-      </Link>
-
-      <Link to={'/data'} className={classes.noLinkDefault}>
-        <ListItem button>
-          <ListItemIcon className={classes.icon}><FontAwesomeIcon icon={faDatabase}/></ListItemIcon>
-          <ListItemText primary={'Data'}/>
-        </ListItem>
-      </Link>
-
-      <Link to={'/model'} className={classes.noLinkDefault}>
-        <ListItem button>
-          <ListItemIcon className={classes.icon}><FontAwesomeIcon icon={faCode}/></ListItemIcon>
-          <ListItemText primary={'Model'}/>
-        </ListItem>
-      </Link>
-
-
-      <Link to={'/task'} className={classes.noLinkDefault}>
-        <ListItem button>
-          <ListItemIcon className={classes.icon}><FontAwesomeIcon icon={faTasks}/></ListItemIcon>
-          <ListItemText primary={'Task'}/>
-        </ListItem>
-      </Link>
-    </div>
-  );
-
   return (
     <div className={classes.root}>
       <Router>
@@ -171,24 +241,10 @@ function MainPage(props) {
             <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
               Brain.AI
             </Typography>
+            <Profile/>
           </Toolbar>
         </AppBar>
-        <Drawer
-          variant="permanent"
-          classes={{
-            paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
-          }}
-          open={open}
-        >
-          <div className={classes.toolbarIcon}>
-            <IconButton onClick={handleDrawerClose}>
-              <ChevronLeftIcon/>
-            </IconButton>
-          </div>
-          <Divider/>
-          <List>{drawer}</List>
-          <Divider/>
-        </Drawer>
+        <MyDrawer open={open} close={handleDrawerClose}/>
         <main className={classes.content}>
           <div className={classes.appBarSpacer}/>
           <Box mt={2} ml={2} mr={2}>
