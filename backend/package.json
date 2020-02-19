@@ -1,0 +1,24 @@
+{
+  "name": "brain-ai",
+  "version": "1.0.0-oas3",
+  "description": "API for Brain.ai",
+  "main": "index.js",
+  "scripts": {
+    "prestart": "npm install",
+    "start": "node index.js"
+  },
+  "keywords": [
+    "swagger"
+  ],
+  "license": "Unlicense",
+  "private": true,
+  "dependencies": {
+    "connect": "^3.2.0",
+    "js-yaml": "^3.3.0",
+    "mysql2": "^2.1.0",
+    "oas3-tools": "^1.0.1"
+  },
+  "devDependencies": {
+    "eslint": "^6.8.0"
+  }
+}
