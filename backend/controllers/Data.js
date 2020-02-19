@@ -41,9 +41,8 @@ module.exports.modifyData = function modifyData (req, res, next) {
 
 module.exports.uploadData = function uploadData (req, res, next) {
   var name = req.swagger.params['name'].value;
-  var file = req.swagger.params['file'].value;
   var session_token = req.swagger.params['session_token'].value;
-  Data.uploadData(name,file,session_token)
+  Data.uploadData(name,session_token)
     .then(function (response) {
       utils.writeJson(res, response);
     })

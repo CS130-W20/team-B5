@@ -2,6 +2,9 @@
 const con = require('../utils/dbconn.js');
 const User = require('../service/UserService');
 const utils = require('../utils/writer.js');
+const gStorage = require('../utils/gcloud');
+const crypto = require('../utils/cryptoUtils.js');
+
 /**
  * remove data the user uploaded
  * remove data the user uploaded
@@ -42,7 +45,7 @@ exports.getData = async function (session_token) {
             "error": 'unauthorized'
         });
     }
-    const [d] = await con.promise().query('select * from data where owner = ?', [uid]);
+    const [d] = await con.promise().query('select * from data where owner = ? and type is not null', [uid]);
     return d;
 };
 
@@ -83,19 +86,24 @@ exports.modifyData = async function (name, data_id, session_token) {
  * returns inline_response_200_2
  **/
 // eslint-disable-next-line no-unused-vars
-exports.uploadData = function (name, file, session_token) {
-    //todo LOADS OF WORK!!!!
-    // eslint-disable-next-line no-unused-vars
-    return new Promise(function (resolve, reject) {
-        const examples = {};
-        examples['application/json'] = {
-            "data_id": 3
-        };
-        if (Object.keys(examples).length > 0) {
-            resolve(examples[Object.keys(examples)[0]]);
-        } else {
-            resolve();
-        }
+exports.uploadData = async function (name, session_token) {
+    const uid = await User.token2uid(session_token);
+    if (uid === -1) {
+        return utils.respondWithCode(401, {
+            "error": 'unauthorized'
+        });
+    }
+    const location = 'data/' + name + '_' + crypto.gen_token() + '.zip';
+    const [d] = await con.promise().query('insert into data set name = ? , owner = ?, location = ?', [name, uid, location]);
+    if (d.affectedRows !== 1) {
+        return utils.respondWithCode(500, {
+            "error": 'failed to add new file'
+        });
+    }
+    const upload_url = await gStorage.generateV4UploadSignedUrl(180, location);
+    return utils.respondWithCode(200, {
+        data_id: d.insertId,
+        upload_url: upload_url
     });
 };
 
