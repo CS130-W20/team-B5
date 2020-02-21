@@ -3,7 +3,6 @@ import Grid from "@material-ui/core/Grid";
 import {makeStyles} from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import {CloudUpload, Search} from "@material-ui/icons";
-import FormControl from "@material-ui/core/FormControl";
 import Input from "@material-ui/core/Input";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import Card from "@material-ui/core/Card";
@@ -12,6 +11,9 @@ import CardMedia from "@material-ui/core/CardMedia";
 import CardActions from "@material-ui/core/CardActions";
 import {CardHeader} from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
+
+import {TextField, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from '@material-ui/core';
+import {Radio, RadioGroup, FormHelperText, FormControlLabel, FormControl, FormLabel} from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
   grid: {
@@ -47,6 +49,70 @@ const rows = [
     "Contemplative Reptile", "10/12/2010"]
 ];
 
+function FormDialog() {
+  const classes = useStyles();
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  return (
+    <div>
+      <Button
+        variant="outlined"
+        color="default"
+        className={classes.searchButton}
+        startIcon={<CloudUpload/>}
+        onClick={handleClickOpen}
+      >
+        Upload
+      </Button>
+
+      <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+        <DialogTitle id="form-dialog-title">Upload Data</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Please select the data file to upload.
+          </DialogContentText>
+          <Button
+            variant="outlined"
+            color="default"
+            component="label"
+            startIcon={<CloudUpload/>}
+          >
+            Upload File
+            <input
+              type="file"
+              style={{display: "none"}}
+            />
+          </Button>
+        </DialogContent>
+
+        <DialogContent>
+          <FormControl component="fieldset">
+            <FormLabel component="legend">Please specify the type of the data.</FormLabel>
+            <RadioGroup defaultValue="training">
+              <FormControlLabel value="training" control={<Radio />} label="Training Data" />
+              <FormControlLabel value="prediction" control={<Radio />} label="Prediction Data" />
+            </RadioGroup>
+          </FormControl>
+        </DialogContent>
+
+        <DialogActions>
+          <Button onClick={handleClose} color="primary">
+            Submit
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </div>
+  );
+}
+
 export default function Data() {
   const classes = useStyles();
   return (
@@ -69,14 +135,8 @@ export default function Data() {
             </FormControl>
           </Grid>
           <Grid>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</Grid>
-          <Grid item><Button
-            variant="outlined"
-            color="default"
-            className={classes.searchButton}
-            startIcon={<CloudUpload/>}
-          >
-            Upload
-          </Button>
+          <Grid item>
+            <FormDialog/>
           </Grid>
         </Grid>
 

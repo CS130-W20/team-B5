@@ -121,11 +121,15 @@ function Profile() {
   };
   const handleClose = () => {
     setAnchorEl(null);
+  };
+  const handleLogout = () =>
+  {
     // history.push("/")
     window.location.href = "/";
+    handleClose();
   };
   const currentUser = "Jiayu Hu";
-  const logedIn = true;
+  const logedIn = false;
 
   return !logedIn ?
     <Link to={'/signin'} className={classes.noLinkDefault}>
@@ -133,7 +137,6 @@ function Profile() {
     </Link> :
     <div>
       <Button
-        aria-label="account of current user"
         aria-controls="menu-appbar"
         aria-haspopup="true"
         onClick={handleMenu}
@@ -148,18 +151,20 @@ function Profile() {
         id="menu-appbar"
         anchorEl={anchorEl}
         anchorOrigin={{
-          vertical: 'top',
-          horizontal: 'right',
+          vertical: 'bottom',
+          horizontal: 'center',
         }}
-        keepMounted
         transformOrigin={{
           vertical: 'top',
-          horizontal: 'right',
+          horizontal: 'center',
         }}
         open={Boolean(anchorEl)}
         onClose={handleClose}
+        getContentAnchorEl={null}
       >
-        <MenuItem onClick={handleClose}>Log Out</MenuItem>
+        <MenuItem onClick={handleLogout}>
+          <ListItemText primary="Log Out" />
+        </MenuItem>
       </Menu>
     </div>
 }
