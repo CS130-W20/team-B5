@@ -12,62 +12,58 @@ py.test test_minimal.tavern.yaml  -v
 
 ## test cases
 <pre>
-/user username_create successfully created user
+/user username_create: successfully created user
 expected response:
     status_code:200
 
-/user username_create bad input parameter
+/user username_create: bad input parameter
 expected response:  
     status_code:400
 
-/user username_create conflict username
+/user username_create: conflict username
 expected response: 
     status_code:409
 
-/user username_create conflict username
+/user username_create: conflict username
 expected response: 
     status_code:409
 
-/user login successfully login
+/user login: successfully login
 expected response:
     status_code:200
     JSON:{ user_token: test_login_token} 
 
-/user login bad input parameter
+/user login: bad input parameter
 expected response: 
     status_code:400
 
-/user login bad credential
+/user login: bad credential
 expected response:
     status_code:401
 
-/data upload new data successfully
+/data upload new data: successfully
 expected response:
     status_code:200 
     JSON:{ data_id: test_data_id}
 
-/data upload new data successfully
-expected response: 
-    status_code:200
-    JSON:{ data_id: test_data_id}
 
-/data upload new data bad input parameter
+/data upload new data: bad input parameter
 expected response: 
     status_code:400
 
-/data upload new data bad token
+/data upload new data: bad token
 expected response: 
     status_code:401
 
-/user log out successfully
+/user log out: successfully
 expected response:
     status_code:200
 
-/user log out bad input parameter
+/user log out: bad input parameter
 expected response:
     status_code:400
 
-/user log out bad token
+/user log out: bad token
 expected response:
     status_code:401
 </pre>
