@@ -1,0 +1,147 @@
+---
+# Every test file has one or more tests...
+test_name: username_create
+# ...and each test has one or more stages (e.g. an HTTP request)
+includes:
+  - !include includes.yaml
+stages:
+  - name: username_create successfully created user
+    # Define the request to be made...
+    request:
+      url: "{host:s}/user"
+      method: POST
+      params:
+        email: abc123@ucla.edu
+        password: fadofaj0j9j
+#    response:
+#      status_code:
+#        - 200
+
+  - name: username_create bad input parameter
+
+    # Define the request to be made...
+    request:
+      url: "{host:s}/user"
+      method: POST
+      params:
+        password: fadofaj0j9j
+    response:
+      status_code:
+        - 400
+
+  - name: username_create conflict username
+    request:
+      url: "{host:s}/user"
+      method: POST
+      params:
+        email: abc123@ucla.edu
+        password: fadofaj0j9j
+    response:
+      status_code:
+        - 409
+
+  - name: user login successfully login
+    request:
+      url: "{host:s}/session"
+      method: POST
+      params:
+        email: abc123@ucla.edu
+        password: fadofaj0j9j
+    response:
+      status_code:
+        - 200
+      save:
+        body:
+          test_login_token: user_token
+          
+
+  - name: user login bad input parameter
+    request:
+      url: "{host:s}/session"
+      method: POST
+      params:
+        email: abc123@ucla.edu
+    response:
+      status_code:
+        - 400
+
+  - name: user login bad credential
+    request:
+      url: "{host:s}/session"
+      method: POST
+      params:
+        email: abc123@ucla.edu
+        password: wrong
+    response:
+      status_code:
+        - 401
+
+  - name:  upload new data successfully
+    request:
+      url: "{host:s}/data"
+      method: POST
+      params: 
+        name: "test1"
+        file: "nofile"
+        session_token: "{test_login_token:s}"
+    response:
+      status_code:
+        - 200
+      save:
+        body:
+          test_data_id: data_id
+
+  - name:  upload new data bad input parameter
+    request:
+      url: "{host:s}/data"
+      method: POST
+      params: 
+        name: "test1"
+        file: "nofile"
+        sessionToken: "{test_login_token:s}"
+    response:
+      status_code:
+        - 400
+
+#changed
+#  - name:  upload new data bad token
+#    request:
+#      url: "{host:s}/data"
+#      method: POST
+#      params: 
+#        name: "test1"
+#        file: "nofile"
+#        session_token: "14159265358979323846"
+#    response:
+#      status_code:
+#        - 401
+
+#Data and Model API are not stable
+
+
+  - name: user log out successfully
+    request:
+      url: "{host:s}/session"
+      method: DELETE
+      params: 
+        session_token: "{test_login_token:s}"
+    response:
+      status_code: 200
+
+  - name: user log out bad input parameter
+    request:
+      url: "{host:s}/session"
+      method: DELETE
+      params: 
+        abc: "{test_login_token:s}"
+    response:
+      status_code: 400
+
+  - name: user log out bad token
+    request:
+      url: "{host:s}/session"
+      method: DELETE
+      params: 
+        session_token: "12345"
+    response:
+      status_code: 401
