@@ -24,10 +24,6 @@ expected response:
 expected response: 
     status_code:409
 
-/user username_create: conflict username
-expected response: 
-    status_code:409
-
 /user login: successfully login
 expected response:
     status_code:200
@@ -45,7 +41,6 @@ expected response:
 expected response:
     status_code:200 
     JSON:{ data_id: test_data_id}
-
 
 /data upload new data: bad input parameter
 expected response: 
