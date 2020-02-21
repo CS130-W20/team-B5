@@ -12,7 +12,8 @@ The testing was performed using the [Jest](https://jestjs.io/) framework.
 
 ## Test cases
 <pre>
-*User.js functional test cases*
+
+**User.js functional test cases**
 /user createUser: successfully create a user
 expected response:
     status_code:200
@@ -56,7 +57,7 @@ expected response:
 test success: expected status code returned
 test failure: bad status code returned
 
-*Data.js functional test cases*
+**Data.js functional test cases**
 /data upload new data: successfully
 expected response:
     status_code:200 
@@ -76,7 +77,7 @@ expected response:
 test success: expected status code returned
 test failure: bad status code returned
 
-*Model.js functional test cases*
+**Model.js functional test cases**
 /model get existing model: successfully
 expected response:
     status_code:200 
