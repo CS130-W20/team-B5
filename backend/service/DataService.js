@@ -5,6 +5,9 @@ const utils = require('../utils/writer.js');
 const gStorage = require('../utils/gcloud');
 const crypto = require('../utils/cryptoUtils.js');
 
+
+const bucket = 'cs130skullstrip';
+
 /**
  * remove data the user uploaded
  * remove data the user uploaded
@@ -14,15 +17,24 @@ const crypto = require('../utils/cryptoUtils.js');
  * no response value expected for this operation
  **/
 exports.deleteData = async function (data_id, session_token) {
-    //todo make sure file is deleted with google cloud API
     const uid = await User.token2uid(session_token);
     if (uid === -1) {
         return utils.respondWithCode(401, {
             "error": 'unauthorized'
         });
     }
-    const [d] = await con.promise().query('delete from data where owner = ? and id = ?', [uid, data_id]);
-    if (d.affectedRows === 1) {
+
+    const [d] = await con.promise().query('select * from data where owner = ? and id = ?', [uid, data_id]);
+    if(d.length===1){
+        try {
+            await gStorage.deleteFile(d[0].location);
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    const [d1] = await con.promise().query('delete from data where owner = ? and id = ?', [uid, data_id]);
+    if (d1.affectedRows === 1) {
         return {};
     }
     return utils.respondWithCode(400, {
@@ -46,7 +58,8 @@ exports.getData = async function (session_token) {
         });
     }
     const [d] = await con.promise().query('select * from data where owner = ? and type is not null', [uid]);
-    return d;
+
+    return d.map(data=>({...data,location:`https://storage.googleapis.com/${bucket}/`+data.location}));
 };
 
 
