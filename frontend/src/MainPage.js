@@ -23,6 +23,8 @@ import {Grid, Box} from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import {Menu, MenuItem} from '@material-ui/core';
 
+import * as FetchData from "./FetchData"
+
 import {BrowserRouter as Router, Link, Route, Switch, useHistory} from "react-router-dom";
 
 const drawerWidth = 240;
@@ -128,9 +130,11 @@ function Profile() {
   };
   const handleLogout = () => {
     // history.push("/")
-    localStorage.clear();
-    window.location.href = "/";
-    handleClose();
+    FetchData.signOut(localStorage.token).then(() => {
+      localStorage.clear();
+      window.location.href = "/";
+      // handleClose();
+    });
   };
 
   return !signedIn ?

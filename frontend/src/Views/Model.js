@@ -71,7 +71,7 @@ class ModelTable extends React.Component {
               <TableCell>{row[1]}</TableCell>
               <TableCell>
                 <Switch
-                  checked={row[2]}
+                  checked={Boolean(row[2])}
                   onChange={this.handleChange(row[0])}
                   inputProps={{'aria-label': 'secondary checkbox'}}
                 />

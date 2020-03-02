@@ -12,6 +12,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import {makeStyles} from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import * as FetchData from "../FetchData"
 
 function Copyright() {
   return (
@@ -54,19 +55,10 @@ export default function SignIn() {
 
     const email = event.target[0].value;
     const password = event.target[2].value;
-    const params = new URLSearchParams({
-      "email": email,
-      "password": password
-    });
-
-    fetch("http://144.202.105.126:8080/session?" + params.toString(), {
-      method: "POST"
-    }).then((response) => {
-      if (!response.ok) throw new Error("invalid");
-      return response.json();
-    }).then((data) => {
+    FetchData.signIn(email, password).then((data) => {
       console.log(JSON.stringify(data));
       localStorage.setItem("token", data.user_token);
+      localStorage.setItem("id", data.user_id);
       localStorage.setItem("email", email);
       window.location.href = "/";
     }).catch((error) => {
