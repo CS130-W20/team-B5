@@ -545,6 +545,10 @@ components:
           type: string
           description: the token that authorize the user
           example: 22d40d3978dd7945bbfcc0bc32a078e2129a253a97cbb04cbb71bc8c506aa9c5
+        user_id:
+          type: integer
+          description: the id of the authorized user
+          example: 15
       example:
         user_token: 22d40d3978dd7945bbfcc0bc32a078e2129a253a97cbb04cbb71bc8c506aa9c5
     inline_response_200_1:
@@ -639,6 +643,7 @@ components:
           enum:
             - training
             - prediction
+            - preview
       example:
         task_status: pending
         data: 3
