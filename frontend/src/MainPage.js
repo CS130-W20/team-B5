@@ -125,13 +125,14 @@ function Profile() {
   const handleLogout = () =>
   {
     // history.push("/")
+    localStorage.clear();
     window.location.href = "/";
     handleClose();
   };
-  const currentUser = "Jiayu Hu";
-  const logedIn = false;
+  const currentUser = localStorage.getItem("email");
+  const token = localStorage.getItem("token");
 
-  return !logedIn ?
+  return !token ?
     <Link to={'/signin'} className={classes.noLinkDefault}>
       <Button color="inherit">Login</Button>
     </Link> :

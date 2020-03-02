@@ -49,11 +49,30 @@ const useStyles = makeStyles(theme => ({
 export default function SignIn() {
   const classes = useStyles();
 
-  const onSubmit = (event) =>
-  {
+  const onSubmit = (event) => {
     event.preventDefault();
-    window.location.href = "/";
-    console.log("submitted")
+
+    const email = event.target[0].value;
+    const password = event.target[2].value;
+    const params = new URLSearchParams({
+      "email": email,
+      "password": password
+    });
+
+    fetch("http://144.202.105.126:8081/session?" + params.toString(), {
+      method: "POST"
+    }).then((response) => {
+      if (!response.ok) throw new Error("invalid");
+      return response.json();
+    }).then((data) => {
+      console.log(JSON.stringify(data))
+      localStorage.setItem("token", data.user_token);
+      localStorage.setItem("email", email);
+      window.location.href = "/";
+    }).catch((error) => {
+      console.log("error")
+    });
+
   }
 
   return (
