@@ -111,6 +111,10 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+const currentUser = localStorage.getItem("email");
+const token = localStorage.getItem("token");
+const signedIn = token != null;
+
 function Profile() {
   const classes = useStyles();
   let history = useHistory();
@@ -122,17 +126,14 @@ function Profile() {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  const handleLogout = () =>
-  {
+  const handleLogout = () => {
     // history.push("/")
     localStorage.clear();
     window.location.href = "/";
     handleClose();
   };
-  const currentUser = localStorage.getItem("email");
-  const token = localStorage.getItem("token");
 
-  return !token ?
+  return !signedIn ?
     <Link to={'/signin'} className={classes.noLinkDefault}>
       <Button color="inherit">Login</Button>
     </Link> :
@@ -164,7 +165,7 @@ function Profile() {
         getContentAnchorEl={null}
       >
         <MenuItem onClick={handleLogout}>
-          <ListItemText primary="Log Out" />
+          <ListItemText primary="Log Out"/>
         </MenuItem>
       </Menu>
     </div>
@@ -254,29 +255,34 @@ function MainPage(props) {
         <main className={classes.content}>
           <div className={classes.appBarSpacer}/>
           <Box mt={2} ml={2} mr={2}>
-            <Switch>
-              <Route path="/wizard">
-                <Wizard/>
-              </Route>
-              <Route path="/data">
-                <Data/>
-              </Route>
-              <Route path="/model">
-                <Model/>
-              </Route>
-              <Route path="/task">
-                <Task/>
-              </Route>
-              <Route path="/signin">
-                <SignIn/>
-              </Route>
-              <Route path="/" exact>
-                <Wizard/>
-              </Route>
+            {signedIn ?
+              <Switch>
+                <Route path="/wizard">
+                  <Wizard/>
+                </Route>
+                <Route path="/data">
+                  <Data/>
+                </Route>
+                <Route path="/model">
+                  <Model/>
+                </Route>
+                <Route path="/task">
+                  <Task/>
+                </Route>
+                <Route path="/signin">
+                  <SignIn/>
+                </Route>
+                <Route path="/" exact>
+                  <Wizard/>
+                </Route>
+                <Route path="/">
+                  <div>404 QAQ</div>
+                </Route>
+              </Switch> :
               <Route path="/">
-                <div>404 QAQ</div>
+                <div><SignIn/></div>
               </Route>
-            </Switch>
+            }
           </Box>
         </main>
       </Router>

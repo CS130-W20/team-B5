@@ -59,13 +59,13 @@ export default function SignIn() {
       "password": password
     });
 
-    fetch("http://144.202.105.126:8081/session?" + params.toString(), {
+    fetch("http://144.202.105.126:8080/session?" + params.toString(), {
       method: "POST"
     }).then((response) => {
       if (!response.ok) throw new Error("invalid");
       return response.json();
     }).then((data) => {
-      console.log(JSON.stringify(data))
+      console.log(JSON.stringify(data));
       localStorage.setItem("token", data.user_token);
       localStorage.setItem("email", email);
       window.location.href = "/";
@@ -73,7 +73,7 @@ export default function SignIn() {
       console.log("error")
     });
 
-  }
+  };
 
   return (
     <Container component="main" maxWidth="xs">
@@ -122,11 +122,6 @@ export default function SignIn() {
             Sign In
           </Button>
           <Grid container>
-            <Grid item xs>
-              <Link href="#" variant="body2">
-                Forgot password?
-              </Link>
-            </Grid>
             <Grid item>
               <Link href="#" variant="body2">
                 {"Don't have an account? Sign Up"}

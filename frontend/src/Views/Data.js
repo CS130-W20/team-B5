@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Grid from "@material-ui/core/Grid";
 import {makeStyles} from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
@@ -14,6 +14,8 @@ import Typography from "@material-ui/core/Typography";
 
 import {TextField, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from '@material-ui/core';
 import {Radio, RadioGroup, FormHelperText, FormControlLabel, FormControl, FormLabel} from '@material-ui/core';
+
+import * as FetchData from "../FetchData"
 
 const useStyles = makeStyles(theme => ({
   grid: {
@@ -38,16 +40,6 @@ const useStyles = makeStyles(theme => ({
 
 }));
 
-const rows = [
-  [1, "T2 flair axial", "Prediction Set", "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Effective_T2-weighted_MRI_of_hemosiderin_deposits_after_subarachnoid_hemorrhage.png/200px-Effective_T2-weighted_MRI_of_hemosiderin_deposits_after_subarachnoid_hemorrhage.png",
-    "Contemplative Reptile", "10/12/2010"],
-  [2, "Dataset ID", "Training Set", "https://upload.wikimedia.org/wikipedia/commons/thumb/0/03/T1-weighted-MRI.png/200px-T1-weighted-MRI.png",
-    "Contemplative Reptile", "10/12/2010"],
-  [3, "T2 flair axial", "Prediction Set", "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Effective_T2-weighted_MRI_of_hemosiderin_deposits_after_subarachnoid_hemorrhage.png/200px-Effective_T2-weighted_MRI_of_hemosiderin_deposits_after_subarachnoid_hemorrhage.png",
-    "Contemplative Reptile", "10/12/2010"],
-  [4, "Dataset ID", "Training Set", "https://upload.wikimedia.org/wikipedia/commons/thumb/0/03/T1-weighted-MRI.png/200px-T1-weighted-MRI.png",
-    "Contemplative Reptile", "10/12/2010"]
-];
 
 function FormDialog() {
   const classes = useStyles();
@@ -113,6 +105,53 @@ function FormDialog() {
   );
 }
 
+class DataTable extends React.Component
+{
+  constructor(props) {
+    super(props);
+    this.state = {rows: []};
+  }
+  componentDidMount()
+  {
+    FetchData.getDataList().then((rows)=>
+    {
+      this.setState({rows: rows});
+    });
+  }
+  render() {
+    return (
+      <Grid item xs={12} container className={this.props.classes.main}>
+        {this.state.rows.map(row =>
+          <Grid item xs={12} sm={6} md={4} lg={3} key={row[0]}>
+            <Card className={this.props.classes.card}>
+              <CardHeader
+                title={row[1]}
+                subheader={row[2]}
+              />
+              <CardActionArea>
+                <CardMedia
+                  className={this.props.classes.media}
+                  image={row[3]}
+                  title={row[1]}
+                />
+                {/*<Typography variant={'subtitle2'} color={"textSecondary"} className={classes.date}>{row[5]}</Typography>*/}
+              </CardActionArea>
+              <CardActions>
+                <Button size="small" color="primary">
+                  Remove
+                </Button>
+                <Button size="small" color="primary">
+                  Download
+                </Button>
+              </CardActions>
+            </Card>
+          </Grid>
+        )}
+      </Grid>
+    );
+  }
+}
+
 export default function Data() {
   const classes = useStyles();
   return (
@@ -139,36 +178,7 @@ export default function Data() {
             <FormDialog/>
           </Grid>
         </Grid>
-
-        <Grid item xs={12} container className={classes.main}>
-          {rows.map(row =>
-            <Grid item xs={12} sm={6} md={4} lg={3} key={row[0]}>
-              <Card className={classes.card}>
-                <CardHeader
-                  title={row[1]}
-                  subheader={row[2]}
-                />
-                <CardActionArea>
-                  <CardMedia
-                    className={classes.media}
-                    image={row[3]}
-                    title={row[4]}
-                  />
-                  <Typography variant={'subtitle2'} color={"textSecondary"}
-                              className={classes.date}>{row[5]}</Typography>
-                </CardActionArea>
-                <CardActions>
-                  <Button size="small" color="primary">
-                    Remove
-                  </Button>
-                  <Button size="small" color="primary">
-                    Download
-                  </Button>
-                </CardActions>
-              </Card>
-            </Grid>
-          )}
-        </Grid>
+        <DataTable classes={classes}/>
       </Grid>
     </div>
   );
