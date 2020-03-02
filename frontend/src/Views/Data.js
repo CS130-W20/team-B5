@@ -89,8 +89,8 @@ function FormDialog() {
           <FormControl component="fieldset">
             <FormLabel component="legend">Please specify the type of the data.</FormLabel>
             <RadioGroup defaultValue="training">
-              <FormControlLabel value="training" control={<Radio />} label="Training Data" />
-              <FormControlLabel value="prediction" control={<Radio />} label="Prediction Data" />
+              <FormControlLabel value="training" control={<Radio/>} label="Training Data"/>
+              <FormControlLabel value="prediction" control={<Radio/>} label="Prediction Data"/>
             </RadioGroup>
           </FormControl>
         </DialogContent>
@@ -105,19 +105,18 @@ function FormDialog() {
   );
 }
 
-class DataTable extends React.Component
-{
+class DataTable extends React.Component {
   constructor(props) {
     super(props);
     this.state = {rows: []};
   }
-  componentDidMount()
-  {
-    FetchData.getDataList().then((rows)=>
-    {
+
+  componentDidMount() {
+    FetchData.getDataList().then((rows) => {
       this.setState({rows: rows});
     });
   }
+
   render() {
     return (
       <Grid item xs={12} container className={this.props.classes.main}>

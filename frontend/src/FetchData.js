@@ -12,3 +12,10 @@ export function getDataList()
   );
 }
 
+export function getModelList()
+{
+  return fetch(backUrl + "models?session_token=" + localStorage.getItem("token")).then(resolveJSON).then(
+    (data) =>
+      data.map(item => [item.id, item.name, item.shared])
+  );
+}

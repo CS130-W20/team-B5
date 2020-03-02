@@ -1,20 +1,16 @@
 import React from 'react';
 import Grid from "@material-ui/core/Grid";
-import {makeStyles} from "@material-ui/core/styles";
+import {makeStyles, ThemeProvider} from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
-import {AddBox, Create, Add, Search} from "@material-ui/icons";
+import {AddBox, Create, Add, Search, Cached, Stop, CloudDownload, Delete} from "@material-ui/icons";
 import FormControl from "@material-ui/core/FormControl";
 import Input from "@material-ui/core/Input";
 import InputAdornment from "@material-ui/core/InputAdornment";
-import Card from "@material-ui/core/Card";
-import CardActionArea from "@material-ui/core/CardActionArea";
-import CardMedia from "@material-ui/core/CardMedia";
-import CardActions from "@material-ui/core/CardActions";
-import {CardHeader} from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import Switch from '@material-ui/core/Switch';
-import FormGroup from "@material-ui/core/FormGroup";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Paper from "@material-ui/core/Paper";
+import {Box, Table, TableHead, TableRow, TableCell, TableBody, TableContainer} from '@material-ui/core';
+import * as FetchData from "../FetchData";
 
 const useStyles = makeStyles(theme => ({
   grid: {
@@ -39,16 +35,63 @@ const useStyles = makeStyles(theme => ({
 
 }));
 
-const rows = [
-  [1, "Model ID", "Description", "https://upload.wikimedia.org/wikipedia/commons/thumb/0/03/T1-weighted-MRI.png/200px-T1-weighted-MRI.png",
-    "Contemplative Reptile", false],
-  [2, "Model ID", "shared model", "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Effective_T2-weighted_MRI_of_hemosiderin_deposits_after_subarachnoid_hemorrhage.png/200px-Effective_T2-weighted_MRI_of_hemosiderin_deposits_after_subarachnoid_hemorrhage.png",
-    "Contemplative Reptile", true],
-  [3, "Model ID", "Description", "https://upload.wikimedia.org/wikipedia/commons/thumb/0/03/T1-weighted-MRI.png/200px-T1-weighted-MRI.png",
-    "Contemplative Reptile", false],
-  [4, "Model ID", "shared model", "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Effective_T2-weighted_MRI_of_hemosiderin_deposits_after_subarachnoid_hemorrhage.png/200px-Effective_T2-weighted_MRI_of_hemosiderin_deposits_after_subarachnoid_hemorrhage.png",
-    "Contemplative Reptile", true],
-];
+class ModelTable extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {rows: []};
+  }
+
+  componentDidMount() {
+    FetchData.getModelList().then((rows) => {
+      this.setState({rows: rows});
+    });
+  }
+
+  handleChange(id) {
+    return event => {
+      console.log(id + " " + event.target.checked);
+    };
+  }
+
+  render() {
+    return <TableContainer component={Paper}>
+      <Table className={this.props.classes.table} aria-label="simple table">
+        <TableHead>
+          <TableRow>
+            <TableCell>Id</TableCell>
+            <TableCell align="left">Name</TableCell>
+            <TableCell align="left">Share</TableCell>
+            <TableCell align="left">Action</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {this.state.rows.map(row => (
+            <TableRow key={row[0]}>
+              <TableCell scope="row">{row[0]}</TableCell>
+              <TableCell>{row[1]}</TableCell>
+              <TableCell>
+                <Switch
+                  checked={row[2]}
+                  onChange={this.handleChange(row[0])}
+                  inputProps={{'aria-label': 'secondary checkbox'}}
+                />
+              </TableCell>
+              <TableCell>
+                <Button size="small" color="primary">
+                  Remove
+                </Button>
+                <Button size="small" color="primary">
+                  Run
+                </Button>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
+  }
+}
+
 export default function Model() {
   const classes = useStyles();
   return (
@@ -81,40 +124,8 @@ export default function Model() {
           </Button>
           </Grid>
         </Grid>
-
-        <Grid item xs={12} container className={classes.main}>
-          {rows.map(row =>
-            <Grid item xs={12} sm={6} md={4} lg={4} key={row[0]}>
-              <Card className={classes.card}>
-                <CardHeader
-                  title={row[1]}
-                  subheader={row[2]}
-                />
-                <CardActionArea>
-                  <CardMedia
-                    className={classes.media}
-                    image={row[3]}
-                    title={row[4]}
-                  />
-                </CardActionArea>
-                <CardActions>
-                  <Button size="small" color="primary">
-                    Remove
-                  </Button>
-                  <Button size="small" color="primary">
-                    Run
-                  </Button>
-                  {!row[5] ? <FormGroup row>
-                    <FormControlLabel
-                      control={<Switch value="checkedA"/>}
-                      label="Share"
-                    /></FormGroup> : null}
-                </CardActions>
-              </Card>
-            </Grid>
-          )}
-        </Grid>
       </Grid>
+      <Box mt={2}><ModelTable classes={classes}/></Box>
     </div>
   );
 }
