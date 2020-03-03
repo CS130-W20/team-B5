@@ -20,14 +20,14 @@ export function getDataList() {
 export function getModelList() {
   return fetch(backUrl + "models?session_token=" + localStorage.getItem("token")).then(resolveJSON).then(
     (data) =>
-      data.map(item => [item.id, item.name, item.shared])
+      data.map(item => [item.id, item.name, item.shared, item.owner == localStorage.getItem("id")])
   );
 }
 
 export function getTaskList() {
   return fetch(backUrl + "task?session_token=" + localStorage.getItem("token")).then(resolveJSON).then(
     (data) =>
-      data.map(item => [item.id, item.type, item.status]).filter(item => item[1] !== "preview")
+      data.map(item => [item.id, item.type, item.status, item.data, item.model === null ? "/" : item.model]).filter(item => item[1] !== "preview")
   );
 }
 
@@ -90,6 +90,10 @@ export function stopTask(taskId) {
 
 export function shareModel(modelId, share) {
   return fetch(backUrl + `models?model_id=${modelId}&session_token=${getToken()}&shared=${share}`, {method: "PUT"});
+}
+
+export function renameModel(modelId, name) {
+  return fetch(backUrl + `models?model_id=${modelId}&session_token=${getToken()}&name=${name}`, {method: "PUT"});
 }
 
 export function createTask(type, dataId, modelId) {

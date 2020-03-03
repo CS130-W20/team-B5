@@ -81,10 +81,10 @@ class TaskTable extends React.Component {
         <Table className={this.props.classes.table} aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell>Id </TableCell>
-              <TableCell>Type </TableCell>
-              <TableCell align="left">Data</TableCell>
-              <TableCell align="left">Model</TableCell>
+              <TableCell>Task Id</TableCell>
+              <TableCell>Type</TableCell>
+              <TableCell align="left">Data ID</TableCell>
+              <TableCell align="left">Model ID</TableCell>
               <TableCell align="left">Progress</TableCell>
               <TableCell align="left">Actions</TableCell>
             </TableRow>
@@ -94,8 +94,8 @@ class TaskTable extends React.Component {
               <TableRow key={row[0]}>
                 <TableCell scope="row">{row[0]}</TableCell>
                 <TableCell>{row[1] === "training" ? "Training" : "Prediction"}</TableCell>
-                <TableCell> </TableCell>
-                <TableCell> </TableCell>
+                <TableCell>{row[3]}</TableCell>
+                <TableCell>{row[4]}</TableCell>
                 <TableCell>{
                   row[2] === 'success' ?
                     <ThemeProvider theme={innerTheme}>
@@ -115,12 +115,12 @@ class TaskTable extends React.Component {
                                 color="default" deleteIcon={<Stop/>} onDelete={handleDelete}/>
                 }</TableCell>
                 <TableCell>
-                  {
-                    row[2] === 'success' && row[1] === "prediction" ?
-                      <IconButton aria-label="delete">
-                        <CloudDownload/>
-                      </IconButton> : null
-                  }
+                  {/*{*/}
+                  {/*  row[2] === 'success' && row[1] === "prediction" ?*/}
+                  {/*    <IconButton aria-label="delete">*/}
+                  {/*      <CloudDownload/>*/}
+                  {/*    </IconButton> : null*/}
+                  {/*}*/}
                   {
                     (row[2] === 'inProgress' || row[2] === 'pending') ?
                       <IconButton aria-label="delete" onClick={this.stopCallback(row[0])}>

@@ -9,7 +9,7 @@ import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import CardMedia from "@material-ui/core/CardMedia";
 import CardActions from "@material-ui/core/CardActions";
-import {CardHeader} from "@material-ui/core";
+import {CardHeader, CardContent} from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 
 import {TextField, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from '@material-ui/core';
@@ -160,7 +160,7 @@ class DataTable extends React.Component {
             <Card className={this.props.classes.card}>
               <CardHeader
                 title={row[1]}
-                subheader={row[2]}
+                subheader={"ID: " + row[0] + ", " + row[2]}
               />
               <CardActionArea>
                 <CardMedia
