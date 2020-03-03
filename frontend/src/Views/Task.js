@@ -14,6 +14,7 @@ import IconButton from "@material-ui/core/IconButton";
 import {green} from '@material-ui/core/colors';
 import {createMuiTheme, ThemeProvider} from '@material-ui/core/styles';
 import * as FetchData from "../FetchData";
+import {Message} from "./Message";
 
 
 const useStyles = makeStyles(theme => ({
@@ -30,7 +31,6 @@ const useStyles = makeStyles(theme => ({
 
 
 const handleDelete = () => {
-  console.info('You clicked the delete icon.');
 };
 
 const innerTheme = createMuiTheme({
@@ -47,10 +47,32 @@ class TaskTable extends React.Component {
     this.state = {rows: []};
   }
 
-  componentDidMount() {
+  fetchData() {
     FetchData.getTaskList().then((rows) => {
       this.setState({rows: rows});
     });
+  }
+
+  componentDidMount() {
+    this.fetchData()
+  }
+
+  removeCallback(id) {
+    return () => {
+      FetchData.deleteTask(id).then(() => {
+        this.props.sendMessage(["success", "Task Removed!"]);
+        this.fetchData();
+      });
+    }
+  }
+
+  stopCallback(id) {
+    return () => {
+      FetchData.stopTask(id).then(() => {
+        this.props.sendMessage(["success", "Task Stoped!"]);
+        this.fetchData();
+      });
+    }
   }
 
   render() {
@@ -71,7 +93,7 @@ class TaskTable extends React.Component {
             {this.state.rows.map(row => (
               <TableRow key={row[0]}>
                 <TableCell scope="row">{row[0]}</TableCell>
-                <TableCell>{row[1] == "training" ? "Training" : "Prediction"}</TableCell>
+                <TableCell>{row[1] === "training" ? "Training" : "Prediction"}</TableCell>
                 <TableCell> </TableCell>
                 <TableCell> </TableCell>
                 <TableCell>{
@@ -101,14 +123,16 @@ class TaskTable extends React.Component {
                   }
                   {
                     (row[2] === 'inProgress' || row[2] === 'pending') ?
-                      <IconButton aria-label="delete">
+                      <IconButton aria-label="delete" onClick={this.stopCallback(row[0])}>
                         <Stop/>
                       </IconButton> : null
                   }
-
-                  <IconButton aria-label="delete">
-                    <Delete/>
-                  </IconButton>
+                  {
+                    (row[2] !== "pending" && row[2] !== "inProgress") ?
+                      <IconButton aria-label="delete" onClick={this.removeCallback(row[0])}>
+                        <Delete/>
+                      </IconButton> : null
+                  }
                 </TableCell>
 
               </TableRow>
@@ -122,5 +146,16 @@ class TaskTable extends React.Component {
 
 export default function Task() {
   const classes = useStyles();
-  return <TaskTable classes={classes}/>
+  const [message, setMessage] = React.useState(["", ""]);
+  const messageRef = React.useRef();
+  const sendMessage = (m) => {
+    setMessage(m);
+    messageRef.current.setOpen(true);
+  };
+  return (
+    <div>
+      <TaskTable classes={classes} sendMessage={sendMessage}/>
+      <Message ref={messageRef} severity={message[0]} value={message[1]}/>
+    </div>
+  )
 }

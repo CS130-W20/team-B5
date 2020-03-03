@@ -13,7 +13,7 @@ export function getDataList() {
   return fetch(backUrl + "data?session_token=" + localStorage.getItem("token")).then(resolveJSON).then(
     (data) =>
       data.map(item => [item.id, item.name, item.type === "training" ? "Training Set" : "Prediction Set",
-        String(item.preview), item.location])
+        item.preview, item.location])
   );
 }
 
@@ -58,22 +58,46 @@ export function signUp(email, password) {
 }
 
 export function signOut(token) {
-  return fetch(backUrl + "session?session_token=" + token, {method: "DELETE"});
+  return fetch(backUrl + "session?session_token=" + token, {method: "DELETE"}).then(resolveJSON);
 }
 
 export function uploadData(name, file) {
+  var dataId = -1;
   return fetch(backUrl + `data?name=${name}&session_token=${getToken()}`,
     {method: "POST"}).then(resolveJSON).then((data) => {
+    dataId = data.data_id;
     return fetch(data.upload_url, {
-      headers: {
-        "Content-Type": "application/octet-stream"
-      },
-      method: "PUT",
-      body: file
+      headers: {"Content-Type": "application/octet-stream"}, method: "PUT", body: file
     })
-  })
+  }).then(() => createTask("preview", dataId));
 }
 
 export function deleteData(dataId) {
-  return fetch(backUrl + `data?data_id=${dataId}&session_token=${getToken()}`, {method: "DELETE"})
+  return fetch(backUrl + `data?data_id=${dataId}&session_token=${getToken()}`, {method: "DELETE"});
+}
+
+export function deleteModel(modelId) {
+  return fetch(backUrl + `models?model_id=${modelId}&session_token=${getToken()}`, {method: "DELETE"});
+}
+
+export function deleteTask(taskId) {
+  return fetch(backUrl + `task?task_id=${taskId}&session_token=${getToken()}`, {method: "DELETE"});
+}
+
+export function stopTask(taskId) {
+  return fetch(backUrl + `task?task_id=${taskId}&session_token=${getToken()}`, {method: "PUT"});
+}
+
+export function shareModel(modelId, share) {
+  return fetch(backUrl + `models?model_id=${modelId}&session_token=${getToken()}&shared=${share}`, {method: "PUT"});
+}
+
+export function createTask(type, dataId, modelId) {
+  const params = JSON.parse(JSON.stringify({
+    "session_token": getToken(),
+    "type": type,
+    "data": dataId,
+    "model": modelId
+  }));
+  return fetch(backUrl + "task?" + new URLSearchParams(params).toString(), {method: "POST"}).then(resolveJSON);
 }

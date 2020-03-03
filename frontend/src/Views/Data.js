@@ -165,7 +165,7 @@ class DataTable extends React.Component {
               <CardActionArea>
                 <CardMedia
                   className={this.props.classes.media}
-                  image={row[3]}
+                  image={"data:image/png;base64," + row[3]}
                   title={row[1]}
                 />
                 {/*<Typography variant={'subtitle2'} color={"textSecondary"} className={classes.date}>{row[5]}</Typography>*/}
@@ -174,7 +174,7 @@ class DataTable extends React.Component {
                 <Button size="small" color="primary" onClick={this.removeDataCallback(row[0])}>
                   Remove
                 </Button>
-                <Button size="small" color="primary" href={row[4]}>
+                <Button size="small" color="primary" href={row[4]} target="_blank">
                   Download
                 </Button>
               </CardActions>

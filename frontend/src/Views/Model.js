@@ -11,6 +11,7 @@ import Switch from '@material-ui/core/Switch';
 import Paper from "@material-ui/core/Paper";
 import {Box, Table, TableHead, TableRow, TableCell, TableBody, TableContainer} from '@material-ui/core';
 import * as FetchData from "../FetchData";
+import {Message} from "./Message";
 
 const useStyles = makeStyles(theme => ({
   grid: {
@@ -41,15 +42,31 @@ class ModelTable extends React.Component {
     this.state = {rows: []};
   }
 
-  componentDidMount() {
+  fetchData() {
     FetchData.getModelList().then((rows) => {
       this.setState({rows: rows});
     });
   }
 
-  handleChange(id) {
+  removeCallback(id) {
+    return () => {
+      FetchData.deleteModel(id).then(() => {
+        this.props.sendMessage(["success", "Model Removed!"]);
+        this.fetchData();
+      });
+    }
+  }
+
+  componentDidMount() {
+    this.fetchData();
+  }
+
+  shareCallback(id) {
     return event => {
-      console.log(id + " " + event.target.checked);
+      FetchData.shareModel(id, event.target.checked).then(() => {
+        this.props.sendMessage(["success", "Model Sharing Setting Changed!"]);
+        this.fetchData();
+      });
     };
   }
 
@@ -72,16 +89,13 @@ class ModelTable extends React.Component {
               <TableCell>
                 <Switch
                   checked={Boolean(row[2])}
-                  onChange={this.handleChange(row[0])}
+                  onChange={this.shareCallback(row[0])}
                   inputProps={{'aria-label': 'secondary checkbox'}}
                 />
               </TableCell>
               <TableCell>
-                <Button size="small" color="primary">
+                <Button size="small" color="primary" onClick={this.removeCallback(row[0])}>
                   Remove
-                </Button>
-                <Button size="small" color="primary">
-                  Run
                 </Button>
               </TableCell>
             </TableRow>
@@ -93,6 +107,13 @@ class ModelTable extends React.Component {
 }
 
 export default function Model() {
+  const [message, setMessage] = React.useState(["", ""]);
+  const messageRef = React.useRef();
+  const sendMessage = (m) => {
+    setMessage(m);
+    messageRef.current.setOpen(true);
+  };
+
   const classes = useStyles();
   return (
     <div>
@@ -125,7 +146,8 @@ export default function Model() {
           </Grid>
         </Grid>
       </Grid>
-      <Box mt={2}><ModelTable classes={classes}/></Box>
+      <Box mt={2}><ModelTable classes={classes} sendMessage={sendMessage}/></Box>
+      <Message ref={messageRef} severity={message[0]} value={message[1]}/>
     </div>
   );
 }
