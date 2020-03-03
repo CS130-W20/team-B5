@@ -4,10 +4,12 @@ var fs = require('fs'),
     path = require('path'),
     http = require('http');
 
-var app = require('connect')();
+var app = require('express')();
 var oas3Tools = require('oas3-tools');
 var jsyaml = require('js-yaml');
 var serverPort = 8080;
+
+var cors = require('cors')
 
 // swaggerRouter configuration
 var options = {
@@ -23,6 +25,7 @@ var swaggerDoc = jsyaml.safeLoad(spec);
 // Initialize the Swagger middleware
 oas3Tools.initializeMiddleware(swaggerDoc, function (middleware) {
 
+  app.use(cors());
   // Interpret Swagger resources and attach metadata to request - must be first in swagger-tools middleware chain
   app.use(middleware.swaggerMetadata());
 

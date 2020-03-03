@@ -9,44 +9,44 @@ info:
     url: http://www.apache.org/licenses/LICENSE-2.0.html
   version: 1.0.0-oas3
 servers:
-- url: https://virtserver.swaggerhub.com/shsssc/brain.ai/1.0.0
+  - url: https://virtserver.swaggerhub.com/shsssc/brain.ai/1.0.0
 tags:
-- name: User
-  description: user & session
-- name: Data
-  description: Manage Data
-- name: Model
-  description: Manage Models
-- name: Tasks
-  description: Manage Tasks
+  - name: User
+    description: user & session
+  - name: Data
+    description: Manage Data
+  - name: Model
+    description: Manage Models
+  - name: Tasks
+    description: Manage Tasks
 paths:
   /user:
     post:
       tags:
-      - User
+        - User
       summary: createUser
       description: |
         new user sign up
       operationId: createUser
       parameters:
-      - name: email
-        in: query
-        description: password of user
-        required: true
-        style: form
-        explode: true
-        schema:
-          type: string
-          example: abc@xyz.com
-      - name: password
-        in: query
-        description: password of user
-        required: true
-        style: form
-        explode: true
-        schema:
-          type: string
-          example: mysuperpassword!#@
+        - name: email
+          in: query
+          description: password of user
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: string
+            example: abc@xyz.com
+        - name: password
+          in: query
+          description: password of user
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: string
+            example: mysuperpassword!#@
       responses:
         "200":
           description: successfully created user
@@ -58,30 +58,30 @@ paths:
   /session:
     post:
       tags:
-      - User
+        - User
       summary: user login
       description: |
         new user log in
       operationId: login
       parameters:
-      - name: email
-        in: query
-        description: password of user
-        required: true
-        style: form
-        explode: true
-        schema:
-          type: string
-          example: abc@xyz.com
-      - name: password
-        in: query
-        description: password of user
-        required: true
-        style: form
-        explode: true
-        schema:
-          type: string
-          example: mysuperpassword!#@
+        - name: email
+          in: query
+          description: password of user
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: string
+            example: abc@xyz.com
+        - name: password
+          in: query
+          description: password of user
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: string
+            example: mysuperpassword!#@
       responses:
         "200":
           description: successfully login
@@ -96,21 +96,21 @@ paths:
       x-swagger-router-controller: User
     delete:
       tags:
-      - User
+        - User
       summary: user log out
       description: |
         authorized user log out
       operationId: logOut
       parameters:
-      - name: session_token
-        in: query
-        description: session token of a user session
-        required: true
-        style: form
-        explode: true
-        schema:
-          type: string
-          example: 22d40d3978dd7945bbfcc0bc32a078e2129a253a97cbb04cbb71bc8c506aa9c5
+        - name: session_token
+          in: query
+          description: session token of a user session
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: string
+            example: 22d40d3978dd7945bbfcc0bc32a078e2129a253a97cbb04cbb71bc8c506aa9c5
       responses:
         "200":
           description: successfully log out
@@ -122,21 +122,21 @@ paths:
   /data:
     get:
       tags:
-      - Data
+        - Data
       summary: list all data the user owns
       description: |
         list all data the user owns
       operationId: getData
       parameters:
-      - name: session_token
-        in: query
-        description: session token of a user session
-        required: true
-        style: form
-        explode: true
-        schema:
-          type: string
-          example: 22d40d3978dd7945bbfcc0bc32a078e2129a253a97cbb04cbb71bc8c506aa9c5
+        - name: session_token
+          in: query
+          description: session token of a user session
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: string
+            example: 22d40d3978dd7945bbfcc0bc32a078e2129a253a97cbb04cbb71bc8c506aa9c5
       responses:
         "200":
           description: successfully list data
@@ -152,38 +152,38 @@ paths:
       x-swagger-router-controller: Data
     put:
       tags:
-      - Data
+        - Data
       summary: rename data
       description: "rename the uploaded data \n"
       operationId: modifyData
       parameters:
-      - name: name
-        in: query
-        description: name of the dataset
-        required: true
-        style: form
-        explode: true
-        schema:
-          type: string
-          example: IMAGE_SET_1
-      - name: data_id
-        in: query
-        description: data id of data to rename
-        required: true
-        style: form
-        explode: true
-        schema:
-          type: integer
-          example: 123
-      - name: session_token
-        in: query
-        description: session token of a user session
-        required: true
-        style: form
-        explode: true
-        schema:
-          type: string
-          example: 22d40d3978dd7945bbfcc0bc32a078e2129a253a97cbb04cbb71bc8c506aa9c5
+        - name: name
+          in: query
+          description: name of the dataset
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: string
+            example: IMAGE_SET_1
+        - name: data_id
+          in: query
+          description: data id of data to rename
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: integer
+            example: 123
+        - name: session_token
+          in: query
+          description: session token of a user session
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: string
+            example: 22d40d3978dd7945bbfcc0bc32a078e2129a253a97cbb04cbb71bc8c506aa9c5
       responses:
         "200":
           description: successfully renamed the data
@@ -194,39 +194,30 @@ paths:
       x-swagger-router-controller: Data
     post:
       tags:
-      - Data
+        - Data
       summary: upload new data
       description: |
         upload data
       operationId: uploadData
       parameters:
-      - name: name
-        in: query
-        description: name of the dataset
-        required: true
-        style: form
-        explode: true
-        schema:
-          type: string
-          example: IMAGE_SET_1
-      - name: file
-        in: query
-        description: content of the zip file
-        required: true
-        style: form
-        explode: true
-        schema:
-          type: string
-          format: binary
-      - name: session_token
-        in: query
-        description: session token of a user session
-        required: true
-        style: form
-        explode: true
-        schema:
-          type: string
-          example: 22d40d3978dd7945bbfcc0bc32a078e2129a253a97cbb04cbb71bc8c506aa9c5
+        - name: name
+          in: query
+          description: name of the dataset
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: string
+            example: IMAGE_SET_1
+        - name: session_token
+          in: query
+          description: session token of a user session
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: string
+            example: 22d40d3978dd7945bbfcc0bc32a078e2129a253a97cbb04cbb71bc8c506aa9c5
       responses:
         "200":
           description: successfully uploaded the data
@@ -241,30 +232,30 @@ paths:
       x-swagger-router-controller: Data
     delete:
       tags:
-      - Data
+        - Data
       summary: remove data the user uploaded
       description: |
         remove data the user uploaded
       operationId: deleteData
       parameters:
-      - name: data_id
-        in: query
-        description: data id of data to delete
-        required: true
-        style: form
-        explode: true
-        schema:
-          type: integer
-          example: 123
-      - name: session_token
-        in: query
-        description: session token of a user session
-        required: true
-        style: form
-        explode: true
-        schema:
-          type: string
-          example: 22d40d3978dd7945bbfcc0bc32a078e2129a253a97cbb04cbb71bc8c506aa9c5
+        - name: data_id
+          in: query
+          description: data id of data to delete
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: integer
+            example: 123
+        - name: session_token
+          in: query
+          description: session token of a user session
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: string
+            example: 22d40d3978dd7945bbfcc0bc32a078e2129a253a97cbb04cbb71bc8c506aa9c5
       responses:
         "200":
           description: successfully removed the data
@@ -276,21 +267,21 @@ paths:
   /models:
     get:
       tags:
-      - Model
+        - Model
       summary: list all Models the user can see
       description: |
         list all Models the user owns or is shared
       operationId: getModel
       parameters:
-      - name: session_token
-        in: query
-        description: session token of a user session
-        required: true
-        style: form
-        explode: true
-        schema:
-          type: string
-          example: 22d40d3978dd7945bbfcc0bc32a078e2129a253a97cbb04cbb71bc8c506aa9c5
+        - name: session_token
+          in: query
+          description: session token of a user session
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: string
+            example: 22d40d3978dd7945bbfcc0bc32a078e2129a253a97cbb04cbb71bc8c506aa9c5
       responses:
         "200":
           description: successfully list models
@@ -306,48 +297,48 @@ paths:
       x-swagger-router-controller: Model
     put:
       tags:
-      - Model
+        - Model
       summary: change model the user owns
       description: |
         modify model the user created
       operationId: modifyModel
       parameters:
-      - name: model_id
-        in: query
-        description: id of model to delete
-        required: true
-        style: form
-        explode: true
-        schema:
-          type: integer
-          example: 123
-      - name: session_token
-        in: query
-        description: session token of a user session
-        required: true
-        style: form
-        explode: true
-        schema:
-          type: string
-          example: 22d40d3978dd7945bbfcc0bc32a078e2129a253a97cbb04cbb71bc8c506aa9c5
-      - name: name
-        in: query
-        description: new name of model
-        required: false
-        style: form
-        explode: true
-        schema:
-          type: string
-          example: best model ever
-      - name: shared
-        in: query
-        description: new share status of model
-        required: false
-        style: form
-        explode: true
-        schema:
-          type: boolean
-          example: true
+        - name: model_id
+          in: query
+          description: id of model to delete
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: integer
+            example: 123
+        - name: session_token
+          in: query
+          description: session token of a user session
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: string
+            example: 22d40d3978dd7945bbfcc0bc32a078e2129a253a97cbb04cbb71bc8c506aa9c5
+        - name: name
+          in: query
+          description: new name of model
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+            example: best model ever
+        - name: shared
+          in: query
+          description: new share status of model
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: boolean
+            example: true
       responses:
         "200":
           description: successfully updated the model
@@ -358,30 +349,30 @@ paths:
       x-swagger-router-controller: Model
     delete:
       tags:
-      - Model
+        - Model
       summary: remove model the user owns
       description: |
         remove model the user created
       operationId: deleteModel
       parameters:
-      - name: model_id
-        in: query
-        description: id of model to delete
-        required: true
-        style: form
-        explode: true
-        schema:
-          type: integer
-          example: 123
-      - name: session_token
-        in: query
-        description: session token of a user session
-        required: true
-        style: form
-        explode: true
-        schema:
-          type: string
-          example: 22d40d3978dd7945bbfcc0bc32a078e2129a253a97cbb04cbb71bc8c506aa9c5
+        - name: model_id
+          in: query
+          description: id of model to delete
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: integer
+            example: 123
+        - name: session_token
+          in: query
+          description: session token of a user session
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: string
+            example: 22d40d3978dd7945bbfcc0bc32a078e2129a253a97cbb04cbb71bc8c506aa9c5
       responses:
         "200":
           description: successfully removed the model
@@ -393,21 +384,21 @@ paths:
   /task:
     get:
       tags:
-      - Tasks
+        - Tasks
       summary: list all tasks the user owns
       description: |
         list all tasks the user owns
       operationId: getTask
       parameters:
-      - name: session_token
-        in: query
-        description: session token of a user session
-        required: true
-        style: form
-        explode: true
-        schema:
-          type: string
-          example: 22d40d3978dd7945bbfcc0bc32a078e2129a253a97cbb04cbb71bc8c506aa9c5
+        - name: session_token
+          in: query
+          description: session token of a user session
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: string
+            example: 22d40d3978dd7945bbfcc0bc32a078e2129a253a97cbb04cbb71bc8c506aa9c5
       responses:
         "200":
           description: successfully listed task
@@ -423,30 +414,30 @@ paths:
       x-swagger-router-controller: Tasks
     put:
       tags:
-      - Tasks
+        - Tasks
       summary: stop a task that is pending or running
       description: |
         stop task the user created. The task must be pending or running.
       operationId: stopTask
       parameters:
-      - name: task_id
-        in: query
-        description: id of task to stop
-        required: true
-        style: form
-        explode: true
-        schema:
-          type: integer
-          example: 29
-      - name: session_token
-        in: query
-        description: session token of a user session
-        required: true
-        style: form
-        explode: true
-        schema:
-          type: string
-          example: 22d40d3978dd7945bbfcc0bc32a078e2129a253a97cbb04cbb71bc8c506aa9c5
+        - name: task_id
+          in: query
+          description: id of task to stop
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: integer
+            example: 29
+        - name: session_token
+          in: query
+          description: session token of a user session
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: string
+            example: 22d40d3978dd7945bbfcc0bc32a078e2129a253a97cbb04cbb71bc8c506aa9c5
       responses:
         "200":
           description: successfully stopped the task
@@ -459,51 +450,52 @@ paths:
       x-swagger-router-controller: Tasks
     post:
       tags:
-      - Tasks
+        - Tasks
       summary: create new task
       description: |
-        generate new task for training/prediction
+        generate new task for training/prediction/preview
       operationId: createTask
       parameters:
-      - name: session_token
-        in: query
-        description: session token of a user session
-        required: true
-        style: form
-        explode: true
-        schema:
-          type: string
-          example: 22d40d3978dd7945bbfcc0bc32a078e2129a253a97cbb04cbb71bc8c506aa9c5
-      - name: type
-        in: query
-        description: the type of the task
-        required: false
-        style: form
-        explode: true
-        schema:
-          type: string
-          example: training
-          enum:
-          - training
-          - prediction
-      - name: data
-        in: query
-        description: data id for the task
-        required: true
-        style: form
-        explode: true
-        schema:
-          type: integer
-          example: 33
-      - name: model
-        in: query
-        description: model id for the prediction task
-        required: false
-        style: form
-        explode: true
-        schema:
-          type: integer
-          example: 5
+        - name: session_token
+          in: query
+          description: session token of a user session
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: string
+            example: 22d40d3978dd7945bbfcc0bc32a078e2129a253a97cbb04cbb71bc8c506aa9c5
+        - name: type
+          in: query
+          description: the type of the task
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+            example: training
+            enum:
+              - training
+              - prediction
+              - preview
+        - name: data
+          in: query
+          description: data id for the task
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: integer
+            example: 33
+        - name: model
+          in: query
+          description: model id for the prediction task
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: integer
+            example: 5
       responses:
         "200":
           description: successfully created task
@@ -512,30 +504,30 @@ paths:
       x-swagger-router-controller: Tasks
     delete:
       tags:
-      - Tasks
+        - Tasks
       summary: remove task from tasklist
       description: |
         remove task the user created. The task must **not** be running.
       operationId: deleteTask
       parameters:
-      - name: task_id
-        in: query
-        description: id of task to delete
-        required: true
-        style: form
-        explode: true
-        schema:
-          type: integer
-          example: 29
-      - name: session_token
-        in: query
-        description: session token of a user session
-        required: true
-        style: form
-        explode: true
-        schema:
-          type: string
-          example: 22d40d3978dd7945bbfcc0bc32a078e2129a253a97cbb04cbb71bc8c506aa9c5
+        - name: task_id
+          in: query
+          description: id of task to delete
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: integer
+            example: 29
+        - name: session_token
+          in: query
+          description: session token of a user session
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: string
+            example: 22d40d3978dd7945bbfcc0bc32a078e2129a253a97cbb04cbb71bc8c506aa9c5
       responses:
         "200":
           description: successfully removed the task
@@ -553,6 +545,10 @@ components:
           type: string
           description: the token that authorize the user
           example: 22d40d3978dd7945bbfcc0bc32a078e2129a253a97cbb04cbb71bc8c506aa9c5
+        user_id:
+          type: integer
+          description: the id of the authorized user
+          example: 15
       example:
         user_token: 22d40d3978dd7945bbfcc0bc32a078e2129a253a97cbb04cbb71bc8c506aa9c5
     inline_response_200_1:
@@ -574,8 +570,8 @@ components:
           type: string
           example: training
           enum:
-          - training
-          - prediction
+            - training
+            - prediction
       example:
         preview: http://aaa.com/image.jpg
         data_name: T2_FLAIR
@@ -588,8 +584,13 @@ components:
           type: integer
           description: the id of the uploaded data
           example: 3
+        upload_url:
+          type: string
+          description: the url for data upload
+          example: http://upload_here.com
       example:
         data_id: 3
+        upload_url: http://upload_here.com
     inline_response_200_3:
       type: object
       properties:
@@ -626,11 +627,11 @@ components:
           description: the status of the task
           example: pending
           enum:
-          - pending
-          - inProgress
-          - stopped
-          - success
-          - error
+            - pending
+            - inProgress
+            - stopped
+            - success
+            - error
         data:
           type: integer
           description: the id of the data associated with the task
@@ -640,8 +641,9 @@ components:
           description: the type of the task
           example: training
           enum:
-          - training
-          - prediction
+            - training
+            - prediction
+            - preview
       example:
         task_status: pending
         data: 3

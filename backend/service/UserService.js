@@ -53,7 +53,8 @@ exports.login = async function (email, password) {
     const new_token = crypto.gen_token();
     await con.promise().query('insert into sessions set user_id = ?, session_token = ?, valid = 1', [d[0].id, new_token]);
     return utils.respondWithCode(200, {
-        "user_token": new_token
+        "user_token": new_token,
+        "user_id": d[0].id
     });
 }
 
