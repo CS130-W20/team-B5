@@ -19,6 +19,8 @@ while(true)
         gen_preview(task);
     elseif (strcmp( task.type,'prediction'))
         run_prediction(task);
+    elseif (strcmp( task.type,'training'))
+        train_model(task);
     end
     
     conn = dbconn();
