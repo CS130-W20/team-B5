@@ -33,10 +33,23 @@ export function signIn(email, password) {
   });
   return fetch(backUrl + "session?" + params.toString(), {
     method: "POST"
-  }).then((response) => {
-    if (!response.ok) throw new Error("invalid");
-    return response.json();
+  }).then(resolveJSON).then((data) => {
+    console.log(JSON.stringify(data));
+    localStorage.setItem("token", data.user_token);
+    localStorage.setItem("id", data.user_id);
+    localStorage.setItem("email", email);
+    window.location.href = "/";
   })
+}
+
+export function signUp(email, password) {
+  const params = new URLSearchParams({
+    "email": email,
+    "password": password
+  });
+  return fetch(backUrl + "user?" + params.toString(), {
+    method: "POST"
+  }).then(resolveJSON);
 }
 
 export function signOut(token) {

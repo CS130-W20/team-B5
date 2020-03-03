@@ -18,7 +18,7 @@ import {faCode, faDatabase, faHatWizard, faTasks} from '@fortawesome/free-solid-
 import Divider from '@material-ui/core/Divider';
 import List from '@material-ui/core/List';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
-import {Data, Model, Task, Wizard, SignIn} from './Views'
+import {Data, Model, Task, Wizard, SignIn, SignUp} from './Views'
 import {Grid, Box} from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import {Menu, MenuItem} from '@material-ui/core';
@@ -273,19 +273,18 @@ function MainPage(props) {
                 <Route path="/task">
                   <Task/>
                 </Route>
-                <Route path="/signin">
-                  <SignIn/>
-                </Route>
-                <Route path="/" exact>
+                <Route path="/">
                   <Wizard/>
                 </Route>
-                <Route path="/">
-                  <div>404 QAQ</div>
-                </Route>
               </Switch> :
-              <Route path="/">
-                <div><SignIn/></div>
-              </Route>
+              <Switch>
+                <Route path="/signup">
+                  <SignUp/>
+                </Route>
+                <Route path="/">
+                  <div><SignIn/></div>
+                </Route>
+              </Switch>
             }
           </Box>
         </main>
