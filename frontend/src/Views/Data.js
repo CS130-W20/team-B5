@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useRef, useState} from 'react';
 import Grid from "@material-ui/core/Grid";
 import {makeStyles} from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
@@ -16,6 +16,10 @@ import {TextField, Dialog, DialogActions, DialogContent, DialogContentText, Dial
 import {Radio, RadioGroup, FormHelperText, FormControlLabel, FormControl, FormLabel} from '@material-ui/core';
 
 import * as FetchData from "../FetchData"
+import DropArea from "./DropArea";
+import {Message} from './Message';
+import Container from "@material-ui/core/Container";
+
 
 const useStyles = makeStyles(theme => ({
   grid: {
@@ -41,9 +45,16 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-function FormDialog() {
+function FormDialog(props) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
+  const [name, setName] = React.useState("");
+
+  const fileRef = React.useRef();
+
+  const handleNameChange = (event) => {
+    setName(event.target.value);
+  };
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -51,6 +62,25 @@ function FormDialog() {
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const sentError = () => {
+    props.sendMessage(["error", "Invalid Name or Data!"]);
+  };
+
+  const onSubmit = () => {
+    let files = fileRef.current.state.files;
+    if (files.length !== 1) {
+      sentError();
+      return;
+    }
+    FetchData.uploadData(name, files[0]).then(() => {
+      props.sendMessage(["success", "Upload Successful."]);
+      handleClose();
+      props.refreshTable();
+    }).catch((error) => {
+      sentError();
+    });
   };
 
   return (
@@ -65,38 +95,30 @@ function FormDialog() {
         Upload
       </Button>
 
-      <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+      <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" fullWidth>
         <DialogTitle id="form-dialog-title">Upload Data</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Please enter the Name for this data.
+          </DialogContentText>
+          <TextField
+            autoFocus
+            margin="dense"
+            label="Data Name"
+            fullWidth
+            onChange={handleNameChange}
+          />
+        </DialogContent>
+
         <DialogContent>
           <DialogContentText>
             Please select the data file to upload.
           </DialogContentText>
-          <Button
-            variant="outlined"
-            color="default"
-            component="label"
-            startIcon={<CloudUpload/>}
-          >
-            Upload File
-            <input
-              type="file"
-              style={{display: "none"}}
-            />
-          </Button>
-        </DialogContent>
-
-        <DialogContent>
-          <FormControl component="fieldset">
-            <FormLabel component="legend">Please specify the type of the data.</FormLabel>
-            <RadioGroup defaultValue="training">
-              <FormControlLabel value="training" control={<Radio/>} label="Training Data"/>
-              <FormControlLabel value="prediction" control={<Radio/>} label="Prediction Data"/>
-            </RadioGroup>
-          </FormControl>
+          <DropArea ref={fileRef}/>
         </DialogContent>
 
         <DialogActions>
-          <Button onClick={handleClose} color="primary">
+          <Button onClick={onSubmit} color="primary">
             Submit
           </Button>
         </DialogActions>
@@ -111,10 +133,23 @@ class DataTable extends React.Component {
     this.state = {rows: []};
   }
 
-  componentDidMount() {
+  fetchData() {
     FetchData.getDataList().then((rows) => {
       this.setState({rows: rows});
     });
+  }
+
+  componentDidMount() {
+    this.fetchData();
+  }
+
+  removeDataCallback(id) {
+    return () => {
+      FetchData.deleteData(id).then(() => {
+        this.props.sendMessage(["success", "Data Removed!"]);
+        this.fetchData();
+      });
+    }
   }
 
   render() {
@@ -136,10 +171,10 @@ class DataTable extends React.Component {
                 {/*<Typography variant={'subtitle2'} color={"textSecondary"} className={classes.date}>{row[5]}</Typography>*/}
               </CardActionArea>
               <CardActions>
-                <Button size="small" color="primary">
+                <Button size="small" color="primary" onClick={this.removeDataCallback(row[0])}>
                   Remove
                 </Button>
-                <Button size="small" color="primary">
+                <Button size="small" color="primary" href={row[4]}>
                   Download
                 </Button>
               </CardActions>
@@ -153,6 +188,13 @@ class DataTable extends React.Component {
 
 export default function Data() {
   const classes = useStyles();
+  const tableRef = useRef();
+  const [message, setMessage] = React.useState(["", ""]);
+  const messageRef = React.useRef();
+  const sendMessage = (m) => {
+    setMessage(m);
+    messageRef.current.setOpen(true);
+  };
   return (
     <div className="App">
       <Grid container>
@@ -174,11 +216,12 @@ export default function Data() {
           </Grid>
           <Grid>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</Grid>
           <Grid item>
-            <FormDialog/>
+            <FormDialog refreshTable={() => tableRef.current.fetchData()} sendMessage={sendMessage}/>
           </Grid>
         </Grid>
-        <DataTable classes={classes}/>
+        <DataTable classes={classes} ref={tableRef} sendMessage={sendMessage}/>
       </Grid>
+      <Message ref={messageRef} severity={message[0]} value={message[1]}/>
     </div>
   );
 }
