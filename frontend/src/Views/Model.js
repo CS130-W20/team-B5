@@ -9,6 +9,7 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import Typography from "@material-ui/core/Typography";
 import Switch from '@material-ui/core/Switch';
 import Paper from "@material-ui/core/Paper";
+import Select from '@material-ui/core/Select';
 import {
   Box,
   Table,
@@ -23,6 +24,7 @@ import {
 import * as FetchData from "../FetchData";
 import {Message} from "./Message";
 import DropArea from "./DropArea";
+import MenuItem from '@material-ui/core/MenuItem';
 
 const useStyles = makeStyles(theme => ({
   grid: {
@@ -47,6 +49,37 @@ const useStyles = makeStyles(theme => ({
 
 }));
 
+class MySwitch extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {rows: []};
+  }
+
+  fetchData() {
+    FetchData.getDataList().then((rows) => {
+      this.setState({rows: rows.filter(row => row[2] === "Training Set")});
+    }).catch();
+  }
+
+  componentDidMount() {
+    this.fetchData();
+  }
+
+  render() {
+    return (<Select
+        labelId="dataid"
+        id="dataid"
+        onChange={this.props.onChange}
+        style={{"minWidth": 450}}
+      >
+        {this.state.rows.map(row =>
+          <MenuItem key={row[0]} value={row[0]}>{`${row[1]} (Data ID: ${row[0]})`}</MenuItem>
+        )}
+      </Select>
+    )
+  }
+}
+
 const MyDialog = forwardRef((props, ref) => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
@@ -61,6 +94,7 @@ const MyDialog = forwardRef((props, ref) => {
     handleClickOpen(callback) {
       setCallback(() => callback);
       setOpen(true);
+      setData(-1);
     }
   }));
 
@@ -76,18 +110,21 @@ const MyDialog = forwardRef((props, ref) => {
   return (
     <div>
       <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" fullWidth>
-        <DialogTitle id="form-dialog-title">Upload Data</DialogTitle>
+        <DialogTitle id="form-dialog-title">{props.title}</DialogTitle>
         <DialogContent>
           <DialogContentText>
             {props.text}
           </DialogContentText>
-          <TextField
-            autoFocus
-            margin="dense"
-            label={props.label}
-            fullWidth
-            onChange={handleDataIdChange}
-          />
+          {props.label === "Data ID" ?
+            <MySwitch onChange={handleDataIdChange}/>
+            : <TextField
+              autoFocus
+              margin="dense"
+              label={props.label}
+              fullWidth
+              onChange={handleDataIdChange}
+            />
+          }
         </DialogContent>
         <DialogActions>
           <Button onClick={onSubmit} color="primary">
@@ -206,9 +243,9 @@ class ModelTable extends React.Component {
         </TableBody>
       </Table>
       <MyDialog text="Please enter the Data ID that is used for making prediction."
-                label="Data ID" ref={this.runDialog}/>
+                label="Data ID" ref={this.runDialog} title="Prediction"/>
       <MyDialog text="Please enter the new name of this model."
-                label="Name" ref={this.renameDialog}/>
+                label="Name" ref={this.renameDialog} title="Rename Model"/>
     </TableContainer>
   }
 }
@@ -269,7 +306,7 @@ export default function Model() {
         </Grid>
       </Grid>
       <MyDialog text="Please enter the Data ID that is used for training a new model."
-                label="Data ID" ref={dialogRef}/>
+                label="Data ID" ref={dialogRef} title="Create New Model"/>
       <Box mt={2}><ModelTable classes={classes} sendMessage={sendMessage} ref={tableRef}/></Box>
       <Message ref={messageRef} severity={message[0]} value={message[1]}/>
     </div>
