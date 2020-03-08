@@ -130,7 +130,7 @@ function FormDialog(props) {
 class DataTable extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {rows: []};
+    this.state = {rows: [], searchStr: ""};
   }
 
   fetchData() {
@@ -153,9 +153,13 @@ class DataTable extends React.Component {
   }
 
   render() {
+    var rows = this.state.rows;
+    if (this.state.searchStr != "")
+      rows = rows.filter((row) => row[1].match(this.state.searchStr) != null)
+
     return (
       <Grid item xs={12} container className={this.props.classes.main}>
-        {this.state.rows.map(row =>
+        {rows.map(row =>
           <Grid item xs={12} sm={6} md={4} lg={3} key={row[0]}>
             <Card className={this.props.classes.card}>
               <CardHeader
@@ -195,6 +199,10 @@ export default function Data() {
     setMessage(m);
     messageRef.current.setOpen(true);
   };
+  const handleSearchChange = (event) => {
+    tableRef.current.setState({searchStr: event.target.value})
+  };
+
   return (
     <div className="App">
       <Grid container>
@@ -206,6 +214,7 @@ export default function Data() {
             <FormControl className={classes.margin} variant='outlined'>
               <Input
                 id="input-with-icon-adornment"
+                onChange={handleSearchChange}
                 startAdornment={
                   <InputAdornment position="start">
                     <Search/>

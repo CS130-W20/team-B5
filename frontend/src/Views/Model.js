@@ -139,7 +139,7 @@ const MyDialog = forwardRef((props, ref) => {
 class ModelTable extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {rows: []};
+    this.state = {rows: [], searchStr: ""};
     this.runDialog = React.createRef();
     this.renameDialog = React.createRef();
   }
@@ -194,6 +194,10 @@ class ModelTable extends React.Component {
   }
 
   render() {
+    var rows = this.state.rows;
+    if (this.state.searchStr != "")
+      rows = rows.filter((row) => row[1].match(this.state.searchStr) != null)
+
     return <TableContainer component={Paper}>
       <Table className={this.props.classes.table} aria-label="simple table">
         <TableHead>
@@ -206,7 +210,7 @@ class ModelTable extends React.Component {
           </TableRow>
         </TableHead>
         <TableBody>
-          {this.state.rows.map(row => (
+          {rows.map(row => (
             <TableRow key={row[0]}>
               <TableCell scope="row">{row[0]}</TableCell>
               <TableCell>{row[1]}</TableCell>
@@ -255,6 +259,8 @@ export default function Model() {
   const messageRef = React.useRef();
   const tableRef = useRef();
   const dialogRef = useRef();
+  const classes = useStyles();
+
   const sendMessage = (m) => {
     setMessage(m);
     messageRef.current.setOpen(true);
@@ -269,7 +275,10 @@ export default function Model() {
     });
   };
 
-  const classes = useStyles();
+  const handleSearchChange = (event) => {
+    tableRef.current.setState({searchStr: event.target.value})
+  };
+
   return (
     <div>
       <Grid container>
@@ -281,6 +290,7 @@ export default function Model() {
             <FormControl className={classes.margin} variant='outlined'>
               <Input
                 id="input-with-icon-adornment"
+                onChange={handleSearchChange}
                 startAdornment={
                   <InputAdornment position="start">
                     <Search/>
