@@ -148,6 +148,7 @@ class ModelTable extends React.Component {
     FetchData.getModelList().then((rows) => {
       this.setState({rows: rows});
     });
+    console.log("Data Fetched");
   }
 
   removeCallback(id) {
@@ -161,6 +162,7 @@ class ModelTable extends React.Component {
 
   componentDidMount() {
     this.fetchData();
+    setInterval(()=>this.fetchData(), 2000);
   }
 
   shareCallback(id) {
