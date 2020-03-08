@@ -137,10 +137,15 @@ class DataTable extends React.Component {
     FetchData.getDataList().then((rows) => {
       this.setState({rows: rows});
     });
+    console.log("Data Fetched");
   }
 
   componentDidMount() {
     this.fetchData();
+    this.intervalID = setInterval(()=>this.fetchData(), 2000);
+  }
+  componentWillUnmount() {
+    clearInterval(this.intervalID);
   }
 
   removeDataCallback(id) {

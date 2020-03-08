@@ -57,7 +57,7 @@ class MySwitch extends React.Component {
 
   fetchData() {
     FetchData.getDataList().then((rows) => {
-      this.setState({rows: rows.filter(row => row[2] === "Training Set")});
+      this.setState({rows: rows.filter(row => row[2] === this.props.type)});
     }).catch();
   }
 
@@ -116,7 +116,7 @@ const MyDialog = forwardRef((props, ref) => {
             {props.text}
           </DialogContentText>
           {props.label === "Data ID" ?
-            <MySwitch onChange={handleDataIdChange}/>
+            <MySwitch onChange={handleDataIdChange} type={props.type}/>
             : <TextField
               autoFocus
               margin="dense"
@@ -148,7 +148,15 @@ class ModelTable extends React.Component {
     FetchData.getModelList().then((rows) => {
       this.setState({rows: rows});
     });
-    console.log("Data Fetched");
+    console.log("Model Fetched");
+  }
+
+  componentDidMount() {
+    this.fetchData();
+    this.intervalID = setInterval(()=>this.fetchData(), 2000);
+  }
+  componentWillUnmount() {
+    clearInterval(this.intervalID);
   }
 
   removeCallback(id) {
@@ -158,11 +166,6 @@ class ModelTable extends React.Component {
         this.fetchData();
       });
     }
-  }
-
-  componentDidMount() {
-    this.fetchData();
-    setInterval(()=>this.fetchData(), 2000);
   }
 
   shareCallback(id) {
@@ -249,7 +252,7 @@ class ModelTable extends React.Component {
         </TableBody>
       </Table>
       <MyDialog text="Please enter the Data ID that is used for making prediction."
-                label="Data ID" ref={this.runDialog} title="Prediction"/>
+                label="Data ID" ref={this.runDialog} title="Prediction" type="Prediction Set"/>
       <MyDialog text="Please enter the new name of this model."
                 label="Name" ref={this.renameDialog} title="Rename Model"/>
     </TableContainer>
@@ -318,7 +321,7 @@ export default function Model() {
         </Grid>
       </Grid>
       <MyDialog text="Please enter the Data ID that is used for training a new model."
-                label="Data ID" ref={dialogRef} title="Create New Model"/>
+                label="Data ID" ref={dialogRef} title="Create New Model" type="Training Set"/>
       <Box mt={2}><ModelTable classes={classes} sendMessage={sendMessage} ref={tableRef}/></Box>
       <Message ref={messageRef} severity={message[0]} value={message[1]}/>
     </div>

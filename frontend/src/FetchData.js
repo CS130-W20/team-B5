@@ -12,7 +12,8 @@ export const resolveJSON = (response) => {
 export function getDataList() {
   return fetch(backUrl + "data?session_token=" + localStorage.getItem("token")).then(resolveJSON).then(
     (data) =>
-      data.map(item => [item.id, item.name, item.type === "training" ? "Training Set" : "Prediction Set",
+      data.map(item => [item.id, item.name,
+        item.type === "training" ? "Training Set" : (item.type === "prediction" ? "Prediction Set" : "Under Processing"),
         item.preview, item.location])
   );
 }
