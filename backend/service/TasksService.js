@@ -37,7 +37,7 @@ exports.createTask = async function (session_token, data, type, model) {
         });
     }
     if (model) {
-        const [d] = await con.promise().query('select id from models where id = ? and owner = ?', [model, uid]);
+        const [d] = await con.promise().query('select id from models where id = ? and (owner = ? or shared = 1)', [model, uid]);
         if (d.length !== 1) {
             return utils.respondWithCode(400, {
                 "error": 'invalid model'
