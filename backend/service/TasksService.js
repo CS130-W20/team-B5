@@ -64,7 +64,7 @@ exports.deleteTask = async function (task_id, session_token) {
             "error": 'unauthorized'
         });
     }
-    const [d, _] = await con.promise().query('delete from tasks where owner = ? and id = ? and status = \'success\' or status = \'failed\' or status = \'stopped\'', [uid, task_id]);
+    const [d, _] = await con.promise().query('delete from tasks where owner = ? and id = ? and (status = \'success\' or status = \'failed\' or status = \'stopped\')', [uid, task_id]);
     if (d.affectedRows === 0) {
         return utils.respondWithCode(400, {
             "error": 'invalid task id'
