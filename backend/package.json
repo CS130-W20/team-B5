@@ -23,6 +23,7 @@
     "oas3-tools": "^1.0.1"
   },
   "devDependencies": {
-    "eslint": "^6.8.0"
+    "eslint": "^6.8.0",
+    "jest": "^22.0.4"
   }
 }
