@@ -11,6 +11,7 @@ import CardMedia from "@material-ui/core/CardMedia";
 import CardActions from "@material-ui/core/CardActions";
 import {CardHeader, CardContent} from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
+import LinearProgress from '@material-ui/core/LinearProgress';
 
 import {TextField, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from '@material-ui/core';
 import {Radio, RadioGroup, FormHelperText, FormControlLabel, FormControl, FormLabel} from '@material-ui/core';
@@ -18,7 +19,6 @@ import {Radio, RadioGroup, FormHelperText, FormControlLabel, FormControl, FormLa
 import * as FetchData from "../FetchData"
 import DropArea from "./DropArea";
 import {Message} from './Message';
-import Container from "@material-ui/core/Container";
 
 
 const useStyles = makeStyles(theme => ({
@@ -40,15 +40,20 @@ const useStyles = makeStyles(theme => ({
   date: {
     textAlign: 'left',
     paddingLeft: 12,
+  },
+  progress: {
+    width: '100%',
+    '& > * + *': {
+      marginTop: theme.spacing(2),
+    },
   }
-
 }));
-
 
 function FormDialog(props) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const [name, setName] = React.useState("");
+  const [progessBar, setProgessBar] = React.useState(false);
 
   const fileRef = React.useRef();
 
@@ -69,6 +74,7 @@ function FormDialog(props) {
   };
 
   const onSubmit = () => {
+    setProgessBar(true);
     let files = fileRef.current.state.files;
     if (files.length !== 1) {
       sentError();
@@ -80,7 +86,7 @@ function FormDialog(props) {
       props.refreshTable();
     }).catch((error) => {
       sentError();
-    });
+    }).finally(() => setProgessBar(false));
   };
 
   return (
@@ -122,6 +128,9 @@ function FormDialog(props) {
             Submit
           </Button>
         </DialogActions>
+        <div className={classes.progress} hidden={!progessBar}>
+          <LinearProgress color="secondary"/>
+        </div>
       </Dialog>
     </div>
   );
@@ -142,7 +151,7 @@ class DataTable extends React.Component {
 
   componentDidMount() {
     this.fetchData();
-    this.intervalID = setInterval(()=>this.fetchData(), 2000);
+    this.intervalID = setInterval(() => this.fetchData(), 2000);
   }
   componentWillUnmount() {
     clearInterval(this.intervalID);
