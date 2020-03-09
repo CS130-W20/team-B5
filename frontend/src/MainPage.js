@@ -18,10 +18,12 @@ import {faCode, faDatabase, faHatWizard, faTasks} from '@fortawesome/free-solid-
 import Divider from '@material-ui/core/Divider';
 import List from '@material-ui/core/List';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
-import {Data, Model, Task, Wizard, SignIn} from './Views'
+import {Data, Model, Task, Wizard, SignIn, SignUp, Test} from './Views'
 import {Grid, Box} from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import {Menu, MenuItem} from '@material-ui/core';
+
+import * as FetchData from "./FetchData"
 
 import {BrowserRouter as Router, Link, Route, Switch, useHistory} from "react-router-dom";
 
@@ -111,6 +113,10 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+const currentUser = localStorage.getItem("email");
+const token = localStorage.getItem("token");
+const signedIn = token != null;
+
 function Profile() {
   const classes = useStyles();
   let history = useHistory();
@@ -121,19 +127,22 @@ function Profile() {
   };
   const handleClose = () => {
     setAnchorEl(null);
-    // history.push("/")
-    window.location.href = "/";
   };
-  const currentUser = "Jiayu Hu";
-  const logedIn = true;
+  const handleLogout = () => {
+    // history.push("/")
+    FetchData.signOut(localStorage.token).then(() => {
+      localStorage.clear();
+      window.location.href = "/";
+      // handleClose();
+    });
+  };
 
-  return !logedIn ?
+  return !signedIn ?
     <Link to={'/signin'} className={classes.noLinkDefault}>
       <Button color="inherit">Login</Button>
     </Link> :
     <div>
       <Button
-        aria-label="account of current user"
         aria-controls="menu-appbar"
         aria-haspopup="true"
         onClick={handleMenu}
@@ -148,18 +157,20 @@ function Profile() {
         id="menu-appbar"
         anchorEl={anchorEl}
         anchorOrigin={{
-          vertical: 'top',
-          horizontal: 'right',
+          vertical: 'bottom',
+          horizontal: 'center',
         }}
-        keepMounted
         transformOrigin={{
           vertical: 'top',
-          horizontal: 'right',
+          horizontal: 'center',
         }}
         open={Boolean(anchorEl)}
         onClose={handleClose}
+        getContentAnchorEl={null}
       >
-        <MenuItem onClick={handleClose}>Log Out</MenuItem>
+        <MenuItem onClick={handleLogout}>
+          <ListItemText primary="Log Out"/>
+        </MenuItem>
       </Menu>
     </div>
 }
@@ -248,29 +259,36 @@ function MainPage(props) {
         <main className={classes.content}>
           <div className={classes.appBarSpacer}/>
           <Box mt={2} ml={2} mr={2}>
-            <Switch>
-              <Route path="/wizard">
-                <Wizard/>
-              </Route>
-              <Route path="/data">
-                <Data/>
-              </Route>
-              <Route path="/model">
-                <Model/>
-              </Route>
-              <Route path="/task">
-                <Task/>
-              </Route>
-              <Route path="/signin">
-                <SignIn/>
-              </Route>
-              <Route path="/" exact>
-                <Wizard/>
-              </Route>
-              <Route path="/">
-                <div>404 QAQ</div>
-              </Route>
-            </Switch>
+            {signedIn ?
+              <Switch>
+                <Route path="/wizard">
+                  <Wizard/>
+                </Route>
+                <Route path="/data">
+                  <Data/>
+                </Route>
+                <Route path="/model">
+                  <Model/>
+                </Route>
+                <Route path="/task">
+                  <Task/>
+                </Route>
+                <Route path="/test">
+                  <Test/>
+                </Route>
+                <Route path="/">
+                  <Wizard/>
+                </Route>
+              </Switch> :
+              <Switch>
+                <Route path="/signup">
+                  <SignUp/>
+                </Route>
+                <Route path="/">
+                  <div><SignIn/></div>
+                </Route>
+              </Switch>
+            }
           </Box>
         </main>
       </Router>
