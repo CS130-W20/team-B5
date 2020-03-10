@@ -2,6 +2,15 @@ const {Storage} = require('@google-cloud/storage');
 
 const storage = new Storage();
 const bucket = 'cs130skullstrip';
+
+if(process.env.CI){
+    exports.generateV4UploadSignedUrl = async function generateV4UploadSignedUrl(){
+        return "http://test_url";
+    };
+    exports.deleteFile = async function deleteFile() {};
+    return;
+}
+
 exports.generateV4UploadSignedUrl = async function generateV4UploadSignedUrl(expireMinutes, file) {
     // These options will allow temporary uploading of the file with outgoing
     // Content-Type: application/octet-stream header.

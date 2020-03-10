@@ -13,9 +13,9 @@ stages:
       params:
         email: abc123@ucla.edu
         password: fadofaj0j9j
-#    response:
-#      status_code:
-#        - 200
+    response:
+      status_code:
+        - 200
 
   - name: username_create bad input parameter
 
