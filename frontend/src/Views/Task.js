@@ -15,6 +15,7 @@ import {green} from '@material-ui/core/colors';
 import {createMuiTheme, ThemeProvider} from '@material-ui/core/styles';
 import * as FetchData from "../FetchData";
 import {Message} from "./Message";
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 
 const useStyles = makeStyles(theme => ({
@@ -22,7 +23,7 @@ const useStyles = makeStyles(theme => ({
     minWidth: 650,
   },
   chip: {
-    width: 120,
+    width: 160,
   },
   button: {
     margin: theme.spacing(1),
@@ -110,7 +111,9 @@ class TaskTable extends React.Component {
                     </ThemeProvider> :
                     row[2] === 'inProgress' ?
                       <Chip className={this.props.classes.chip} label='In progress' variant="outlined"
-                            color="primary" deleteIcon={<Cached/>} onDelete={handleDelete}/> :
+                            color="primary" deleteIcon={
+                              <CircularProgress variant="static" value={row[5]} size={20}/>
+                            } onDelete={handleDelete}/> :
                       row[2] === 'pending' ?
                         <Chip className={this.props.classes.chip} label='Pending' variant="outlined"
                               color="primary" deleteIcon={<Cached/>} onDelete={handleDelete}/> :

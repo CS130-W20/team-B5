@@ -28,7 +28,7 @@ export function getModelList() {
 export function getTaskList() {
   return fetch(backUrl + "task?session_token=" + localStorage.getItem("token")).then(resolveJSON).then(
     (data) =>
-      data.map(item => [item.id, item.type, item.status, item.data, item.model === null ? "/" : item.model]).filter(item => item[1] !== "preview")
+      data.map(item => [item.id, item.type, item.status, item.data, (item.model === null ? "/" : item.model), item.percentage]).filter(item => item[1] !== "preview")
   );
 }
 
