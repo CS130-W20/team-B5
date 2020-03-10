@@ -7,4 +7,4 @@ description: Login information for test server
 
 # Variables should just be a mapping of key: value pairs
 variables:
-  host: http://144.202.105.126:8080
+  host: http://127.0.0.1:8000
