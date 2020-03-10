@@ -54,6 +54,7 @@ exports.getModel = async function (session_token) {
             "error": 'unauthorized'
         });
     }
+    // eslint-disable-next-line no-unused-vars
     const [d, _] = await con.promise().query('select * from models where owner = ? or shared = 1', [uid]);
     return d;
 }
@@ -77,6 +78,7 @@ exports.modifyModel = async function (model_id, session_token, name, shared) {
         });
     }
     if (name) {
+        // eslint-disable-next-line no-unused-vars
         const [d, _] = await con.promise().query('update models set name = ? where owner = ? and id = ?', [name, uid, model_id]);
         if (d.affectedRows !== 1) {
             return utils.respondWithCode(400, {
@@ -86,6 +88,7 @@ exports.modifyModel = async function (model_id, session_token, name, shared) {
     }
 
     if (shared !== undefined) {
+        // eslint-disable-next-line no-unused-vars
         const [d, _] = await con.promise().query('update models set shared = ? where owner = ? and id = ?', [shared, uid, model_id]);
         if (d.affectedRows !== 1) {
             return utils.respondWithCode(400, {

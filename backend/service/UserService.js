@@ -11,6 +11,7 @@ const crypto = require('../utils/cryptoUtils.js');
  * no response value expected for this operation
  **/
 exports.createUser = async function (email, password) {
+    // eslint-disable-next-line no-unused-vars
     const [d, _] = await con.promise().query('select * from users where email = ?', [email]);
     if (d.length !== 0)
         return utils.respondWithCode(409, {'error': 'email already registered!'});
@@ -27,6 +28,7 @@ exports.createUser = async function (email, password) {
  * no response value expected for this operation
  **/
 exports.logOut = async function (session_token) {
+    // eslint-disable-next-line no-unused-vars
     const [a, b] = await con.promise().query('update sessions set valid = 0 where session_token = ?', [session_token]);
     if (a.affectedRows === 1)
         return {};
@@ -45,6 +47,7 @@ exports.logOut = async function (session_token) {
  * returns inline_response_200
  **/
 exports.login = async function (email, password) {
+    // eslint-disable-next-line no-unused-vars
     const [d, _] = await con.promise().query('select * from users where email = ? and password = ?', [email, crypto.hash_password(password)]);
     if (d.length !== 1)
         return utils.respondWithCode(401, {
@@ -59,6 +62,7 @@ exports.login = async function (email, password) {
 }
 
 exports.token2uid = async function(session_token){
+    // eslint-disable-next-line no-unused-vars
     const [d, b] = await con.promise().query('select * from sessions where session_token = ? and valid=1', [session_token]);
     if(d.length===0)
         return -1;

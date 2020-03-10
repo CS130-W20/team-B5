@@ -64,6 +64,7 @@ exports.deleteTask = async function (task_id, session_token) {
             "error": 'unauthorized'
         });
     }
+    // eslint-disable-next-line no-unused-vars
     const [d, _] = await con.promise().query('delete from tasks where owner = ? and id = ? and (status = \'success\' or status = \'failed\' or status = \'stopped\')', [uid, task_id]);
     if (d.affectedRows === 0) {
         return utils.respondWithCode(400, {
@@ -88,6 +89,7 @@ exports.getTask = async function (session_token) {
             "error": 'unauthorized'
         });
     }
+    // eslint-disable-next-line no-unused-vars
     const [d, _] = await con.promise().query('select * from tasks where owner = ?', [uid]);
     return utils.respondWithCode(200, d);
 };
@@ -108,6 +110,7 @@ exports.stopTask = async function (task_id, session_token) {
             "error": 'unauthorized'
         });
     }
+    // eslint-disable-next-line no-unused-vars
     const [d, _] = await con.promise().query('update tasks set status = \'stopped\' where owner = ? and id = ?', [uid, task_id]);
     if (d.affectedRows === 0) {
         return utils.respondWithCode(400, {

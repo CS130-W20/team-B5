@@ -3,6 +3,7 @@
 var utils = require('../utils/writer.js');
 var Model = require('../service/ModelService');
 
+// eslint-disable-next-line no-unused-vars
 module.exports.deleteModel = function deleteModel (req, res, next) {
   var model_id = req.swagger.params['model_id'].value;
   var session_token = req.swagger.params['session_token'].value;
@@ -15,6 +16,7 @@ module.exports.deleteModel = function deleteModel (req, res, next) {
     });
 };
 
+// eslint-disable-next-line no-unused-vars
 module.exports.getModel = function getModel (req, res, next) {
   var session_token = req.swagger.params['session_token'].value;
   Model.getModel(session_token)
@@ -26,6 +28,7 @@ module.exports.getModel = function getModel (req, res, next) {
     });
 };
 
+// eslint-disable-next-line no-unused-vars
 module.exports.modifyModel = function modifyModel (req, res, next) {
   var model_id = req.swagger.params['model_id'].value;
   var session_token = req.swagger.params['session_token'].value;
