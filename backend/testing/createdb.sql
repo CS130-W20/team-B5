@@ -1,4 +1,5 @@
 CREATE DATABASE brain;
+USE brain;
 create table if not exists users
 (
     id       int auto_increment
