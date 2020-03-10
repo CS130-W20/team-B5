@@ -24,4 +24,4 @@ jobs:
         - npm start &
         - sleep 5
         - cd testing
-        - tavern-ci test_minimal.tavern.yaml
+        - PYTHONPATH=$PYTHONPATH:`pwd`/ tavern-ci test_minimal.tavern.yaml
