@@ -25,6 +25,7 @@ import * as FetchData from "../FetchData";
 import {Message} from "./Message";
 import DropArea from "./DropArea";
 import MenuItem from '@material-ui/core/MenuItem';
+import {useHistory} from "react-router-dom";
 
 const useStyles = makeStyles(theme => ({
   grid: {
@@ -181,6 +182,7 @@ class ModelTable extends React.Component {
     return (dataId) => {
       FetchData.createTask("prediction", dataId, id).then(() => {
         this.props.sendMessage(["success", "Prediction Task Created!"]);
+        setTimeout(() => this.props.history.push("/task"), 1000);
       }).catch((error) => {
         this.props.sendMessage(["error", "Invalid Data ID"]);
       });
@@ -265,7 +267,7 @@ export default function Model() {
   const tableRef = useRef();
   const dialogRef = useRef();
   const classes = useStyles();
-
+  const history = useHistory();
   const sendMessage = (m) => {
     setMessage(m);
     messageRef.current.setOpen(true);
@@ -275,6 +277,7 @@ export default function Model() {
     FetchData.createTask("training", dataId).then(() => {
       sendMessage(["success", "Model Created!"]);
       tableRef.current.fetchData();
+      setTimeout(() => history.push("/task"), 1000);
     }).catch((error) => {
       sendMessage(["error", "Invalid Data ID"]);
     });
@@ -322,7 +325,7 @@ export default function Model() {
       </Grid>
       <MyDialog text="Please enter the Data ID that is used for training a new model."
                 label="Data ID" ref={dialogRef} title="Create New Model" type="Training Set"/>
-      <Box mt={2}><ModelTable classes={classes} sendMessage={sendMessage} ref={tableRef}/></Box>
+      <Box mt={2}><ModelTable classes={classes} sendMessage={sendMessage} ref={tableRef} history={history}/></Box>
       <Message ref={messageRef} severity={message[0]} value={message[1]}/>
     </div>
   );
