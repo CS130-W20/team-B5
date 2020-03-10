@@ -15,11 +15,12 @@ jobs:
       before_install:
         - cd backend/testing
         - mysql -u root --password="" < createdb.sql
+        - pyenv install -y 3.7
+        - pip install -y tavern
+        - pip install -y tavern[pytest]
+      script:
         - cd ..
         - npm start &
+        - sleep 5
         - cd testing
-        - pyenv install 3.7
-        - pip install tavern
-        - pip install tavern[pytest]
-      script:
         - py.test test_minimal.tavern.yaml  -v
