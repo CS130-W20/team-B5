@@ -20,8 +20,8 @@ jobs:
         - pip3 install tavern[pytest] --user
       script:
         - cd ..
+        - npm install
         - npm start &
         - sleep 5
         - cd testing
-        - tavern-ci --help
-        - py.test test_minimal.tavern.yaml  -v
+        - tavern-ci test_minimal.tavern.yaml
