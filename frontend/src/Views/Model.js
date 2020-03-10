@@ -26,6 +26,7 @@ import {Message} from "./Message";
 import DropArea from "./DropArea";
 import MenuItem from '@material-ui/core/MenuItem';
 import {useHistory} from "react-router-dom";
+import ReactJson from 'react-json-view';
 
 const useStyles = makeStyles(theme => ({
   grid: {
@@ -137,12 +138,48 @@ const MyDialog = forwardRef((props, ref) => {
   );
 });
 
+const InfoDialog = forwardRef((props, ref) => {
+  const [open, setOpen] = React.useState(false);
+  const [value, setValue] = React.useState(null);
+
+  React.useImperativeHandle(ref, () => ({
+    handleClickOpen(v) {
+      setValue(v);
+      setOpen(true);
+    }
+  }));
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  return (
+    <Dialog
+      open={open}
+      onClose={handleClose}
+      aria-labelledby="alert-dialog-title"
+      aria-describedby="alert-dialog-description"
+      fullWidth
+    >
+      <DialogTitle id="alert-dialog-title">{"Info"}</DialogTitle>
+      <DialogContent>
+        <ReactJson src={JSON.parse(value)} name="metadata"/>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={handleClose} color="primary" autoFocus>
+          Close
+        </Button>
+      </DialogActions>
+    </Dialog>)
+});
+
 class ModelTable extends React.Component {
   constructor(props) {
     super(props);
     this.state = {rows: [], searchStr: ""};
     this.runDialog = React.createRef();
     this.renameDialog = React.createRef();
+    this.infoDialog = React.createRef();
   }
 
   fetchData() {
@@ -154,7 +191,7 @@ class ModelTable extends React.Component {
 
   componentDidMount() {
     this.fetchData();
-    this.intervalID = setInterval(()=>this.fetchData(), 2000);
+    this.intervalID = setInterval(() => this.fetchData(), 2000);
   }
   componentWillUnmount() {
     clearInterval(this.intervalID);
@@ -238,6 +275,15 @@ class ModelTable extends React.Component {
                 }>
                   Run
                 </Button>
+                {row[4] ?
+                  <Button size="small" color="primary" onClick={
+                    () => {
+                      this.infoDialog.current.handleClickOpen(row[4])
+                    }
+                  }>
+                    Info
+                  </Button> : null
+                }
                 <Button size="small" color="primary" onClick={
                   () => {
                     this.renameDialog.current.handleClickOpen(this.renameCallback(row[0]))
@@ -257,6 +303,7 @@ class ModelTable extends React.Component {
                 label="Data ID" ref={this.runDialog} title="Prediction" type="Prediction Set"/>
       <MyDialog text="Please enter the new name of this model."
                 label="Name" ref={this.renameDialog} title="Rename Model"/>
+      <InfoDialog ref={this.infoDialog}/>
     </TableContainer>
   }
 }
