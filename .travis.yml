@@ -22,6 +22,6 @@ jobs:
         - cd ..
         - npm install
         - CI=1 npm start &
-        - sleep 13
+        - sleep 9
         - cd testing
         - PYTHONPATH=$PYTHONPATH:`pwd`/ py.test test_minimal.tavern.yaml -v
