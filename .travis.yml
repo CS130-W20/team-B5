@@ -1,7 +1,21 @@
 language: node_js
 node_js:
   - 11
-before_install: 
-  - cd backend
-script:
-  - eslint .
+
+jobs:
+  include:
+    - stage: lint
+      before_install:
+        - cd backend
+      script:
+        - eslint .
+    - stage: test
+      services:
+        - mysql
+      before_install:
+        - cd backend/testing
+        - pyenv install 3.6.8
+        - pip install tavern
+        - pip install tavern[pytest]
+      script:
+        - py.test test_minimal.tavern.yaml  -v
