@@ -1,4 +1,6 @@
 # Brain.ai
+[![Build Status](https://travis-ci.com/CS130-W20/team-B5.svg?branch=master)](https://travis-ci.com/CS130-W20/team-B5)
+
 Brain.ai is a web application that performs deep-learning-based brain extraction for medical imaging researchers.It allows researchers with limited or no programming background to make use of deep learning on their brain extraction task by providing the necessary software frameworks and computation power. 
 
 ## Directory Structure
