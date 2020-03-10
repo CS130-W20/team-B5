@@ -51,10 +51,16 @@ class TaskTable extends React.Component {
     FetchData.getTaskList().then((rows) => {
       this.setState({rows: rows});
     });
+    console.log("Task Fetched");
   }
 
   componentDidMount() {
-    this.fetchData()
+    this.fetchData();
+    this.intervalID = setInterval(() => this.fetchData(), 2000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.intervalID);
   }
 
   removeCallback(id) {
