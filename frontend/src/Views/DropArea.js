@@ -19,7 +19,7 @@ export default class DropArea extends React.Component
       <DropzoneArea
         acceptedFiles={['application/zip', 'application/octet-stream', 'application/x-zip-compressed', 'multipart/x-zip']}
         maxFileSize={50000000}
-        dropzoneText="Drag and drop an Zip file here or click"
+        dropzoneText="Drag and drop a zip file here or click to upload"
         onChange={this.handleChange.bind(this)}
         showPreviews={true}
         showPreviewsInDropzone={false}

@@ -88,7 +88,7 @@ export default function VerticalLinearStepper() {
       <CustomLink to="/data" value="Go to the Data View"/>
     </Typography>,
     <Typography>
-      Now, it's time to create a model using the existent training data set.<br/>
+      Now, it's time to create a model using the existing training data set.<br/>
       <CustomLink to="/model" value="Go to the Model View"/>
     </Typography>,
     <Typography>
@@ -98,8 +98,7 @@ export default function VerticalLinearStepper() {
     </Typography>,
     <Typography>
       You can check all the tasks in our system using the <CustomLink to="/task" value="Task View"/> view, and after the
-      prediction is done, we can go back to our <CustomLink to="/data" value="Data View"/> to find out the result and
-      download.
+      prediction is done, we can go back to our <CustomLink to="/data" value="Data View"/> to analyze and download the result.
     </Typography>
   ];
 
