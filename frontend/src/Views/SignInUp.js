@@ -221,3 +221,5 @@ export function SignUp() {
     </Container>
   );
 }
+
+export default SignInUp;

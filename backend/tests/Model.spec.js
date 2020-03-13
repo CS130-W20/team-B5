@@ -45,6 +45,24 @@ describe("Operations performed on Models", () => {
     expect(res.json).toHaveBeenCalledWith("status_code:200");
   });
 
+  test("Program should not be able to delete the Model if invalid session token is provided (req, res)", () => {
+    const req = mockRequest({model_id: '123'} ,{ session_token: '22d40d3978dd7945bbfcc0bc32a078e2129a253a97cbb04cbb71bc8c506aa9c5'});
+    const res = mockResponse();
+
+    deleteModel(req, res);
+    expect(res.status).toHaveBeenCalledWith(400);
+    expect(res.json).toHaveBeenCalledWith("status_code:400");
+  });
+
+  test("Program should not be able to delete the Model if wrong or invalid model id is provided (req, res)", () => {
+    const req = mockRequest({model_id: '000000000000'} ,{ session_token: '22d40d3978dd7945bbfcc0bc32a078e2129a253a97cbb04cbb71bc8c506aa9c5'});
+    const res = mockResponse();
+
+    deleteModel(req, res);
+    expect(res.status).toHaveBeenCalledWith(400);
+    expect(res.json).toHaveBeenCalledWith("status_code:400");
+  });
+
   test("Program should be able to successfully change the required Model (req, res)", () => {
     const req = mockRequest({model_id: 123}, { session_token: '22d40d3978dd7945bbfcc0bc32a078e2129a253a97cbb04cbb71bc8c506aa9c5'}, {name: 'Best Model Ever'});
     const res = mockResponse();
@@ -52,6 +70,24 @@ describe("Operations performed on Models", () => {
     modifyModel(req, res);
     expect(res.status).toHaveBeenCalledWith(200);
     expect(res.json).toHaveBeenCalledWith("status_code:200");
+  });
+
+  test("Program should not be able to modify the Model if invalid session token is passed(req, res)", () => {
+    const req = mockRequest({model_id: 123}, { session_token: '22d40d3978dd7945bbfcc0bc32a078e2129a253a97cbb04cbb71bc8c506aa9c5'}, {name: 'Best Model Ever'});
+    const res = mockResponse();
+
+    modifyModel(req, res);
+    expect(res.status).toHaveBeenCalledWith(400);
+    expect(res.json).toHaveBeenCalledWith("status_code:400");
+  });
+
+  test("Program should not be able to modify the Model if wrong or invalid model id is provided (req, res)", () => {
+    const req = mockRequest({model_id: 000000000000}, { session_token: '22d40d3978dd7945bbfcc0bc32a078e2129a253a97cbb04cbb71bc8c506aa9c5'}, {name: 'Best Model Ever'});
+    const res = mockResponse();
+
+    modifyModel(req, res);
+    expect(res.status).toHaveBeenCalledWith(400);
+    expect(res.json).toHaveBeenCalledWith("status_code:400");
   });
 
 });
