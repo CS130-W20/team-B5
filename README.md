@@ -14,7 +14,4 @@ For worker, run the `main` script.
 
 ## Relevant Links 
 - Documentation link: https://cs130-w20.github.io/team-B5/
-- Working URL (if any)
-- anything else
-
 
