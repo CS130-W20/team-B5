@@ -9,8 +9,22 @@ Brain.ai is a web application that performs deep-learning-based brain extraction
 - The `worker` directory contains the work that runs machine learning training/prediction
 - The `frontend` directory contains code for web frontend.
 ## Installation/Run instructions
-For backend and frontend, `cd` that folder and then run `npm start`.
-For worker, run the `main` script.
+To run the application, first download the repo:
+`git clone git@github.com:CS130-W20/team-B5.git`
+`cd team-B5`
+
+For backend servers, go into that folder and then run npm command:
+`cd backend`  
+`npm start`
+
+For frontend, go into the folder and then run npm command:
+`cd frontend`
+`npm start`
+
+For workers, go into the folder and run the `main` script.
+`cd worker`
+`npm main`
+
 
 ## Relevant Links 
 - Documentation link: https://cs130-w20.github.io/team-B5/
